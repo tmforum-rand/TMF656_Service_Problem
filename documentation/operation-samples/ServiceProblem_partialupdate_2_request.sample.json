@@ -1,0 +1,8 @@
+{
+    "op": "add",
+    "path": "/affectedService",
+    "value": {
+        "id": "44",
+        "href": "https://mycsp.com:8080/tmf-api/serviceInventoryManagement/v4/service/service/44"
+    }
+}

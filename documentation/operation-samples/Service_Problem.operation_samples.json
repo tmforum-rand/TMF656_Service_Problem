@@ -1,0 +1,132 @@
+{
+    "ServiceProblem": {
+        "list": {
+            "samples": [
+                {
+                    "description": "Here's an example of a request for retrieving multiple service problems, in this example closed items first reported from a specific service",
+                    "fields": "id,href,statusChangeDate,category", 
+                    "filtering": "status=closed&priority=1&firstAlert.id=NP1_TT_0000000", 
+                    "content-type": "application/json", 
+                    "response" : "$_ServiceProblem_list_1_response"
+                }
+            ]
+        }, 
+        "retrieve": {
+            "samples" : [
+                {
+                    "description" : "Here's an example of a request for retrieving a specific service problem.",
+                    "content-type": "application/json",
+                    "objectId": "problemxxxx0000",
+                    "response" : "$_ServiceProblem_retrieve_1_response"
+        		}
+            ]
+        }, 
+        "create": {
+            "samples" : [
+                {
+                    "description" : "Here's an example of a request for creating a specific service problem. In this example the request only passes mandatory attributes.",
+                    "content-type": "application/json",
+                    "request" : "$_ServiceProblem_create_1_request",
+                    "response" : "$_ServiceProblem_create_1_response"
+        		}
+            ]
+        },
+        "partialupdate": {
+            "samples" : [
+                {
+                    "description" : "Here's an example of a request for patching a service problem. In this example, a new description is set.",
+                    "content-type": "application/merge-patch+json",
+                    "objectId": "problemxxxx0000",
+                    "request" : "$_ServiceProblem_partialupdate_1_request",
+                    "response" : "$_ServiceProblem_partialupdate_1_response"
+        		},
+                {
+                    "description" : "Here's an example of a request for patching a service problem. In this example, an affected service is added.",
+                    "content-type": "application//json-patch+json",
+                    "objectId": "problemxxxx0000",
+                    "request" : "$_ServiceProblem_partialupdate_2_request",
+                    "response" : "$_ServiceProblem_partialupdate_2_response"
+        		}
+            ]
+        },
+        "delete":  {
+            "samples" : [
+                {
+                    "description" : "Here's an example of a request for deleting a service problem.",
+                    "content-type": "application/json",
+                    "objectId": "problemxxxx0000"
+        		}
+            ]
+        }
+    },
+    "ServiceProblemEventRecord": {
+        "list": {
+            "samples": [
+                {
+                    "description": "Here's an example of a request for retrieving multiple event records for a service problems",
+                    "filtering": "serviceProblem.id=problemxxxx0000", 
+                    "content-type": "application/json", 
+                    "response" : "$_ServiceProblemEventRecord_list_1_response"
+                }
+            ]
+        }, 
+        "retrieve": {
+            "samples" : [
+                {
+                    "description" : "Here's an example of a request for retrieving a specific service problem event record.",
+                    "content-type": "application/json",
+                    "objectId": "42",
+                    "response" : "$_ServiceProblemEventRecord_retrieve_1_response"
+        		}
+            ]
+        }
+    },   
+    "ProblemGroup": {
+        "create": {
+            "samples" : [
+                {
+                    "description" : "Here's an example of a request for requesting service problems to be grouped together with a parent. In this example the request is handled synchronously so the task resource is not persisted.",
+                    "content-type": "application/json",
+                    "request" : "$_ProblemGroup_create_1_request",
+                    "response" : "$_ProblemGroup_create_1_response"
+        		}
+            ]
+        }
+    },
+    "ProblemUngroup": {
+        "create": {
+            "samples" : [
+                {
+                    "description" : "Here's an example of a request for requesting service problems to be ungrouped from a parent. In this example the request is handled synchronously so the task resource is not persisted.",
+                    "content-type": "application/json",
+                    "request" : "$_ProblemUngroup_create_1_request",
+                    "response" : "$_ProblemUngroup_create_1_response"
+        		}
+            ]
+        }
+    },
+    "ProblemAcknowledgement": {
+        "create": {
+            "samples" : [
+                {
+                    "description" : "Here's an example of a request for acknowledging service problem. In this example the request is handled synchronously so the task resource is not persisted.",
+                    "content-type": "application/json",
+                    "request" : "$_ProblemAcknowledgement_create_1_request",
+                    "response" : "$_ProblemAcknowledgement_create_1_response"
+        		}
+            ]
+        }
+    },
+    "ProblemUnacknowledgement": {
+        "create": {
+            "samples" : [
+                {
+                    "description" : "Here's an example of a request for reversing the acknowledgment of a service problem. In this example the request is handled synchronously so the task resource is not persisted.",
+                    "content-type": "application/json",
+                    "request" : "$_ProblemUnacknowledgement_create_1_request",
+                    "response" : "$_ProblemUnacknowledgement_create_1_response"
+        		}
+            ]
+        }
+    }
+}

@@ -1,0 +1,20 @@
+{
+    "id": "sp_001",
+    "href" : "https://mycsp.com:8080/tmf-api/serviceProblemManagement/v4/serviceProblem/sp_001",
+    "category": "serviceProvider.declared",
+    "priority" : "1",
+    "description" : "connection failure between Tokyo and Osaka at 5:00",
+    "reason": "unknown",
+    "originatorParty" : {
+        "role" : "Service Provider",
+        "id" : "SP_00001",
+        "href": "https://mycsp.com:8080/tmf-api/partyManagement/v4/party/SP_00001",
+        "@referredType" : "Supplier"
+    },
+    "affectedService" : [
+        {
+            "id" : "SP00001_Service_001",
+            "href" : "https://mycsp.com:8080/tmf-api/serviceInventoryManagement/v4/service/SP00001_Service_001"
+        }
+    ]
+}

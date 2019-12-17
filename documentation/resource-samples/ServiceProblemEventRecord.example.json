@@ -1,0 +1,21 @@
+{
+    "id": "42",
+    "href": "https://mycsp.com:8080/tmf-api/serviceProblemManagement/v4/serviceProblemEventRecord/42",
+    "recordTime": "2016-08-08T10:45:30.0Z",
+    "eventType": "ServiceProblemCreationNotification",
+    "eventTime": "2016-08-08T10:45:25.0Z",
+    "serviceProblemId": "SP001",
+    "notification": {
+        "eventType": "ServiceProblemCreationNotification",
+        "eventTime": "2016-08-08T10:45:25.0Z",
+        "eventId": "92775",
+        "event":
+        {
+        }            
+    },
+    "serviceProblem":
+    {
+        "id": "problemxxxx0000",
+        "href": "https://mycsp.com:8080/tmf-api/serviceProblemManagement/v4/serviceProblem/problemxxxx0000"
+    }
+}

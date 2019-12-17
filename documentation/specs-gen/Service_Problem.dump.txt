@@ -1,0 +1,416 @@
+
+======= Service_Problem 
+
+title: Service Delivery Framework Cloud Interface
+  24: style:Heading 1 text:NOTICE
+  41: style:Heading 1 text:Table of Contents
+  62: style:Heading 1 text:List of Tables
+  66: style:Heading 1 text:Introduction
+  68: style:Heading 1 text:SAMPLE USE CASES
+    71: style:Heading 2 text:Use case 1
+    80: style:Heading 2 text:Use case 2
+    82: style:Heading 2 text:Use case 3
+    94: style:Heading 2 text:Use case 4
+    100: style:Heading 2 text:Service Problem Lifecycle
+  115: style:Heading 1 text:Support of polymorphism and extension patterns
+  124: style:Heading 1 text:RESOURCE MODEL
+    125: style:Heading 2 text:Managed Entity and Task Resource Models
+      126: style:Heading 3 text:FIRST resource
+    128: style:Heading 2 text:Notification Resource Models
+      130: style:Heading 3 text:First Notification
+  133: style:Heading 1 text: API OPERATIONS
+    140: style:Heading 2 text:VERB  url
+  142: style:Heading 1 text:API NOTIFICATIONS
+    145: style:Heading 2 text:Register listener
+    159: style:Heading 2 text:Unregister listener
+    170: style:Heading 2 text:Publish Event to listener
+  186: style:Heading 1 text:Acknowledgements
+    187: style:Heading 2 text:Document History
+    188: style:Heading 2 text:Release History
+      192: style:Heading 3 text:Version History
+    195: style:Heading 2 text:Contributors to Document
+
+
+------- CONTENT ------ 
+
+3: style:Normal text:TM Forum Specification
+6: style:Normal text:Service Problem Management API REST Specification
+13: style:Normal text:TMF656
+14: style:Normal text:Release 18.5.0
+15: style:Normal text:January 2019
+23: TABLE 
+  24: style:Heading 1 text:NOTICE
+  25: style:Normal text:Copyright © TM Forum 2019. All Rights Reserved.
+  27: style:Normal text:This document and translations of it may be copied and furnished to others, and derivative works that comment on or otherwise explain it or assist in its implementation may be prepared, copied, published, and distributed, in whole or in part, without restriction of any kind, provided that the above copyright notice and this section are included on all such copies and derivative works. However, this document itself may not be modified in any way, including by removing the copyright notice or references to TM FORUM, except as needed for the purpose of developing any document or deliverable produced by a TM FORUM Collaboration Project Team (in which case the rules applicable to copyrights, as set forth in the , must be followed) or as required to translate it into languages other than English.
+  29: style:Normal text:The limited permissions granted above are perpetual and will not be revoked by TM FORUM or its successors or assigns.
+  31: style:Normal text:This document and the information contained herein is provided on an "AS IS" basis and TM FORUM DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE INFORMATION HEREIN WILL NOT INFRINGE ANY OWNERSHIP RIGHTS OR ANY IMPLIED WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+  33: style:Normal text:Direct inquiries to the TM Forum office:
+  35: style:Normal text:4 Century Drive, Suite 100
+  36: style:Normal text:Parsippany, NJ 07054, USA
+  37: style:Normal text:Tel No. +1 973 944 5100
+  38: style:Normal text:Fax No. +1 973 944 5110
+  39: style:Normal text:TM Forum Web Page: 
+  41: style:Heading 1 text:Table of Contents
+  62: style:Heading 1 text:List of Tables
+  64: style:Normal text:N/A
+  66: style:Heading 1 text:Introduction
+  67: style:Normal text:This Service Problem Management API is used for the service providers (Defined as the Middle B) to manage the service problems in their service area. Service problem is generated based on the information declared by Middle B or the event information notified from infrastructure providers (Defined as the First B) who provide the infrastructure of cloud or network. The event information includes alarm information, performance anomaly information, trouble ticket information, SLA violation, maintenance information and prediction information. Middle Bs can refer the service problems and the event information from First Bs and when the service problems occur or its status have been changed, Middle Bs can receive notifications. According to these functions, Middle Bs are able to grasp the service problems quickly and accurately.
+  68: style:Heading 1 text:SAMPLE USE CASES
+  69: style:Normal text:We assume following situation:
+There are Network Provider 1 (NP1) and 2 (NP2), which provide network infrastructure, and Cloud Provider 1, 2, which provides cloud infrastructure, as First Bs. Using these infrastructure, Service Provider 1 (SP1), 2 (SP2) and 3 (SP3) are providing their services to their end-users as Middle Bs.  
+
+    71: style:Heading 2 text:Use case 1
+    72: style:Normal text:When trouble happened in any resources of NW/Cloud Providers, Service Providers can know their services are affected or not. The specific use case is following:
+    73: style:List Paragraph text:SPM collects configuration information of services provided by service providers in advance using Product Inventory Management API, etc.
+    74: style:List Paragraph text:Each of Middle Bs - Service Provider 1 (SP1), Service Provider 2 (SP2), Service Provider 3 (SP3) - registers the notification destination to SPM SPI.
+    75: style:List Paragraph text:When a fault occurs, SPM receives a trouble ticket from the Network Provider 1 (NP1).
+    76: style:List Paragraph text:SPM creates a Service Problem based on the Trouble Ticket.
+    77: style:List Paragraph text:SPM notifies the Service Problem creation notification to Middle B (SP1, SP3) to notify expected service impact, based on the configuration information collected in advance.
+    78: style:List Paragraph text:When SPM receives a notification that the trouble ticket has changed to "In Progress" state, update the status of the relevant Service Problem. Notify the Service Problem state change notification to Middle B (SP1, SP3). 
+    80: style:Heading 2 text:Use case 2
+    81: style:Normal text:To analyze the past problems, Middle B collects the problem information in the past one year.
+    82: style:Heading 2 text:Use case 3
+    83: style:Normal text:Service providers can declare a new service problem based on trouble declarations from their end-users. In addition, the SPM administrator can associate the service problem, based on the Middle B declaration, with another problem based on a First B event such as a Trouble Ticket. The specific use case is following:
+    84: style:List Paragraph text:Based on the report from the user that there is a problem in the Internet access, Middle B (SP1) gets the current service problem.
+    85: style:List Paragraph text:After SPM collects the current Service Problems, returns that there are no problems related to the service of the Middle B (SP1).
+    86: style:List Paragraph text:In order to request the analysis of this event, Middle B declares a new service problem.
+    87: style:List Paragraph text:Since the SPM administrator found that necessary detailed information was insufficient, SPM administrator requests additional information about the behavior of the Middle B side.
+    88: style:List Paragraph text:SP1 collects the specified additional information and registers it.
+    89: style:List Paragraph text:SPM administrator checks the additional information, and accepts the Service Problem (Problem 1).
+    90: style:List Paragraph text:First B(NP1) registers a detected problem event to the trouble ticket, and notice a new trouble ticket generation to SPM. The SPM creates a Service Problem (Problem 2) based on the trouble ticket.
+    91: style:List Paragraph text:Since the two problems affects the same location, SPM administrator determines that the declared problem (Problem 1) and the new problem based on the new trouble ticket (Problem 2) is associated. SPM administrator associates Problem 1 with 2.  In this case, Problem 1 will have Problem2 as the association "underlyingProblem". Note that Problem 1 can have an "parentProblem" as another association if he would like to group those problems.
+    92: style:List Paragraph text:Since the Problem 1 was changed to add a "underlyingProblem", Service Problem Change Notification is sent to SP1.
+    94: style:Heading 2 text:Use case 4
+    95: style:Normal text:The SPM administrator can associate and group multiple service problems so that service providers can easily recognize what the real problem is. The specific use case is following:
+    96: style:List Paragraph text:SPM receives an alarm from NP1, and creates a Service Problem based on it (Problem 1).
+    97: style:List Paragraph text:SPM recieves an SLA violation from NP2 and creates a Service Problem based on it (Problem 2).
+    98: style:List Paragraph text:By analyzing problems, SPM administrator determines that Problem 1 and 2 are the same problem. SPM administrator creates a new Service Problem (Problem 3) in order to group and associate Problem 1, 2 and 3. In this case, Problem 3 is a parent and Problem 1 and 2 are children.
+    100: style:Heading 2 text:Service Problem Lifecycle
+    101: style:Normal text:ServiceProblem states:
+    102: style:Normal text:Following the available status values for a service problem are listed. The status value is in accordance with Trouble Ticket API. The state graphic gives an overview of the allowed status changes
+    103: style:List Paragraph text:Submitted
+    104: style:List Paragraph text:Rejected
+    105: style:List Paragraph text:Acknowledged
+    106: style:List Paragraph text:In Progress
+    107: style:List Paragraph text:Held
+    108: style:List Paragraph text:Pending
+    109: style:List Paragraph text:Resolved
+    110: style:List Paragraph text:Closed
+    111: style:List Paragraph text:Cancelled
+    113: style:Caption text:Figure 1 - Life Cycle
+    114: TABLE 
+  115: style:Heading 1 text:Support of polymorphism and extension patterns
+  117: style:Normal text:Support of polymorphic collections and types and schema based extension is provided by means of a list of generic meta-attributes that we describe below. Polymorphism in collections occurs when entities inherit from base entities, for instance a RouterProblem and MainSwitchProblem inheriting properties from the ServiceProblem entity.
+  118: style:Normal text:Generic support of polymorphism and pattern extensions is described in the TMF API Guidelines v3.0 Part 2 document.
+  119: style:Normal text:The @type attribute provides a way to represent the actual class type of an entity. For example, within a list of ServiceProblem instances some may be instances of RouterProblem where other could be instances of MainSwitchProblem. The @type gives this information. All resources and sub-resources of this API have a @type attributes that can be provided when this is useful.
+  120: style:Normal text:The @referredType can be used within reference entities (like for instance an ServiceProblemRef object) to explicitly denote the actual entity type of the referred class. Notice that in reference entities the @type, when used, denotes the class type of the reference itself, such as ServiceProblemRef, and not the class type of the referred object. However, since reference classes are rarely sub-classed, @type is generally not useful in reference objects.
+  121: style:Normal text:The @schemaLocation property can be used in resources to allow specifying user-defined properties of an Entity or to specify the expected characteristics of an entity.
+  122: style:Normal text:The @baseType attribute gives a way to provide explicitly the base of class of a given resource that has been extended.
+  123: style:Normal text:
+
+  124: style:Heading 1 text:RESOURCE MODEL
+    125: style:Heading 2 text:Managed Entity and Task Resource Models
+      126: style:Heading 3 text:FIRST resource
+    128: style:Heading 2 text:Notification Resource Models
+      130: style:Heading 3 text:First Notification
+  133: style:Heading 1 text: API OPERATIONS
+  134: style:Normal text:Remember the following Uniform Contract:
+  135: TABLE 
+  137: style:Normal text:Filtering and attribute selection rules are described in the TMF REST Design Guidelines Part 1 Document.
+  138: style:Normal text:Notifications are also described in a subsequent section.
+    140: style:Heading 2 text:VERB  url
+  142: style:Heading 1 text:API NOTIFICATIONS
+  143: style:Normal text:For every single of operation on the entities use the following templates and provide sample REST notification POST calls.
+  144: style:Normal text:It is assumed that the Pub/Sub uses the Register and UnRegister mechanisms described in the REST Guidelines part 1. Refer to the guidelines for more details.
+    145: style:Heading 2 text:Register listener
+    146: style:Normal text:  POST /hub
+    147: style:Normal text:Description
+    148: style:Normal text:Sets the communication endpoint address the service instance must use to deliver information about its health state, execution state, failures and metrics. Subsequent POST calls will be rejected by the service if it does not support multiple listeners. In this case DELETE /api/hub/{id} must be called before an endpoint can be created again.
+    149: style:Normal text:Behavior
+    150: style:Normal text:Returns HTTP/1.1 status code 204 if the request was successful.
+    151: style:Normal text:Returns HTTP/1.1 status code 409 if request is not successful.
+    152: style:Normal text:Usage Samples
+    153: style:Normal text:Here's an example of a request for registering a listener.
+    155: TABLE 
+    157: style:Normal text:
+
+    159: style:Heading 2 text:Unregister listener
+    160: style:Normal text:  DELETE /hub/{id}
+    161: style:Normal text:Description
+    162: style:Normal text:Clears the communication endpoint address that was set by creating the Hub.
+    163: style:Normal text:Behavior
+    164: style:Normal text:Returns HTTP/1.1 status code 204 if the request was successful.
+    165: style:Normal text:Returns HTTP/1.1 status code 404 if the resource is not found.
+    166: style:Normal text:Usage Samples
+    167: style:Normal text:Here's an example of a request for un-registering a listener.
+    168: TABLE 
+    170: style:Heading 2 text:Publish Event to listener
+    171: style:Normal text:  POST /client/listener
+    172: style:Normal text:Description
+    173: style:Normal text:Clears the communication endpoint address that was set by creating the Hub.
+    174: style:Normal text:Provides to a registered listener the description of the event that was raised. The /client/listener url is the callback url passed when registering the listener.
+    175: style:Normal text:Behavior
+    176: style:Normal text:Returns HTTP/1.1 status code 201 if the service is able to set the configuration. 
+    177: style:Normal text:Usage Samples
+    178: style:Normal text:Here's an example of a notification received by the listener. In this example "EVENT TYPE" should be replaced by one of the notification types supported by this API (see Notification resources Models section) and EVENT BODY refers to the data structure of the given notification type.
+    179: TABLE 
+    181: style:Normal text:For detailed examples on the general TM Forum notification mechanism, see the TMF REST Design Guidelines Part 1 document.
+  186: style:Heading 1 text:Acknowledgements
+    187: style:Heading 2 text:Document History
+    188: style:Heading 2 text:Release History
+    190: TABLE 
+      192: style:Heading 3 text:Version History
+      193: TABLE 
+    195: style:Heading 2 text:Contributors to Document
+    196: TABLE 
+
+
+------- TABLES ------ 
+
+
+table:23 ***
+
+    cell:0,0: ***
+      0: text:Latest Update: TM Forum Release 18.5.0
+    cell:0,1: ***
+      0: text:Member Evaluation
+    cell:1,0: ***
+      0: text:Version 4.0.0
+    cell:1,1: ***
+      0: text:IPR Mode: RAND
+
+table:114 ***
+
+    cell:0,0: ***
+      0: text:State
+    cell:0,1: ***
+      0: text:Description
+    cell:1,0: ***
+      0: text:Submitted
+    cell:1,1: ***
+      0: text:The initial state of a service problem when created by a service problem originator
+    cell:2,0: ***
+      0: text:Acknowledged
+    cell:2,1: ***
+      0: text:The Service Problem was accepted and allocated a unique service problem id by Service problem handler.
+    cell:3,0: ***
+      0: text:In Progress
+    cell:3,1: ***
+      0: text:The service problem was validated by the service problem handler and is being processed.
+    cell:4,0: ***
+      0: text:Resolved
+    cell:4,1: ***
+      0: text:The fault indicated in the service problem was corrected by the service problem handler and acknowledgement is awaited from its originator.
+    cell:5,0: ***
+      0: text:Closed
+    cell:5,1: ***
+      0: text:The service Problem’s originator has acknowledged the ‘Resolved’ state of the service problem, or the timeframe for acknowledgement has passed without response from service problem originator.
+    cell:6,0: ***
+      0: text:Rejected
+    cell:6,1: ***
+      0: text:The service problem was rejected because it:
+      1: text:is not submitted
+      2: text:provides invalid information
+      3: text:fails to meet the Business rules in respect of the product which originator is raisinig a service problem against
+      4: text:is otherwise defective
+    cell:7,0: ***
+      0: text:In Progress – Pending
+    cell:7,1: ***
+      0: text:Service problem handler is awaiting further confirmation on details of a Fault from originator before it can progress the Fault. An example is where appointment information is required.
+    cell:8,0: ***
+      0: text:In Progress - Held
+    cell:8,1: ***
+      0: text:Service problem handler is confirming further details internally before completing a service problem. An example is where service problem handler for network infrastructure spare parts to progress with the fault rectification.
+    cell:9,0: ***
+      0: text:Cancelled
+    cell:9,1: ***
+      0: text:The service problem was cancelled because it:
+      1: text:Was cancelled by service problem originator
+
+table:135 ***
+
+    cell:0,0: ***
+      0: text:Operation on Entities
+    cell:0,1: ***
+      0: text:Uniform API Operation
+    cell:0,2: ***
+      0: text:Description
+    cell:1,0: ***
+      0: text:Query Entities
+    cell:1,1: ***
+      0: text:GET Resource
+    cell:1,2: ***
+      0: text:GET must be used to retrieve a representation of a resource.
+      1: text:
+    cell:2,0: ***
+      0: text:Create Entity
+    cell:2,1: ***
+      0: text:POST Resource
+    cell:2,2: ***
+      0: text:POST must be used to create a new resource
+    cell:3,0: ***
+      0: text:Partial Update of an Entity
+    cell:3,1: ***
+      0: text:PATCH Resource
+    cell:3,2: ***
+      0: text:PATCH must be used to partially update a resource
+    cell:4,0: ***
+      0: text:Complete Update of an Entity
+    cell:4,1: ***
+      0: text:PUT Resource
+    cell:4,2: ***
+      0: text:PUT must be used to completely update a resource identified by its resource URI 
+    cell:5,0: ***
+      0: text:Remove an Entity
+    cell:5,1: ***
+      0: text:DELETE Resource
+    cell:5,2: ***
+      0: text:DELETE must be used to remove a resource
+    cell:6,0: ***
+      0: text:Execute an Action on an Entity 
+    cell:6,1: ***
+      0: text:POST on TASK Resource
+    cell:6,2: ***
+      0: text:POST must be used to execute Task Resources
+    cell:7,0: ***
+      0: text:Other Request Methods
+    cell:7,1: ***
+      0: text:POST on TASK Resource
+    cell:7,2: ***
+      0: text:GET and POST must not be used to tunnel other request methods.
+
+table:155 ***
+
+    cell:0,0: ***
+      0: text:
+Request
+
+    cell:1,0: ***
+      0: text:POST /api/hub
+      1: text:Accept: application/json
+      2: text:
+      3: text:{"callback": "http://in.listener.com"}
+
+    cell:2,0: ***
+      0: text:
+Response
+
+    cell:3,0: ***
+      0: text:201
+      1: text:Content-Type: application/json
+      2: text:Location: /api/hub/42
+      3: text:
+      4: text:{"id":"42","callback":"http://in.listener.com","query":null}
+      5: text:
+
+table:168 ***
+
+    cell:0,0: ***
+      0: text:
+Request
+
+    cell:1,0: ***
+      0: text:DELETE /api/hub/42
+      1: text:Accept: application/json
+
+    cell:2,0: ***
+      0: text:
+Response
+
+    cell:3,0: ***
+      0: text:204
+
+table:179 ***
+
+    cell:0,0: ***
+      0: text:
+Request
+
+    cell:1,0: ***
+      0: text:POST /client/listener
+      1: text:Accept: application/json
+      2: text:
+      3: text:{
+      4: text:    "event": { 
+      5: text:                EVENT BODY 
+      6: text:            },
+      7: text:    "eventType": "EVENT_TYPE"
+      8: text:}
+
+    cell:2,0: ***
+      0: text:
+Response
+
+    cell:3,0: ***
+      0: text:201
+
+table:190 ***
+
+    cell:0,0: ***
+      0: text:Release Number
+    cell:0,1: ***
+      0: text:Date 
+    cell:0,2: ***
+      0: text:Release led by:
+    cell:0,3: ***
+      0: text:Description 
+    cell:1,0: ***
+      0: text:Release 1.0
+    cell:1,1: ***
+      0: text:20-Jun-2018
+    cell:1,2: ***
+      0: text:Pierre Gauthier
+      1: text:TM Forum
+      2: text:
+    cell:1,3: ***
+      0: text:First Release of the Document. 
+    cell:2,0: ***
+      0: text:Release 4.0.0
+    cell:2,1: ***
+      0: text:16-Jan-2019
+    cell:2,2: ***
+      0: text:Jonathan Goldberg
+      1: text:Amdocs
+      2: text:
+    cell:2,3: ***
+      0: text:Schema alignment for NaaS APIs
+
+table:193 ***
+
+    cell:0,0: ***
+      0: text:Release Number
+    cell:0,1: ***
+      0: text:Date 
+    cell:0,2: ***
+      0: text:Release led by:
+    cell:0,3: ***
+      0: text:Description 
+    cell:1,0: ***
+      0: text:Release 18.5.0
+    cell:1,1: ***
+      0: text:16 Jan 2019
+    cell:1,2: ***
+      0: text:Jonathan Goldberg
+      1: text:Amdocs
+      2: text:
+    cell:1,3: ***
+      0: text:Schema alignment for NaaS APIs
+
+table:196 ***
+
+    cell:0,0: ***
+      0: text:Pierre Gauthier
+    cell:0,1: ***
+      0: text:TM Forum
+    cell:1,0: ***
+      0: text:Kiyotaka Mizuno
+    cell:1,1: ***
+      0: text:NTT
+    cell:2,0: ***
+      0: text:Takayuki Nakamura
+    cell:2,1: ***
+      0: text:NTT
+    cell:3,0: ***
+      0: text:Jonathan Goldberg
+    cell:3,1: ***
+      0: text:Amdocs

@@ -1,0 +1,51 @@
+{
+    "affectedLocation": [
+        {}
+    ], 
+    "affectingServiceNumber": 12, 
+    "category": "a string ...", 
+    "comment": [
+        {}
+    ], 
+    "correlationId": "897", 
+    "description": "This  service problem ...", 
+    "extensionInfo": [
+        {}
+    ], 
+    "firstAlert": {}, 
+    "href": "https:/host:port/tmf-api/serviceProblem/v1/serviceProblem/9636", 
+    "id": "9636", 
+    "impactImportanceFactor": "a string ...", 
+    "impactPatterns": {}, 
+    "originatingSystem": "a string ...", 
+    "parentProblem": [
+        {}
+    ], 
+    "priority": 36, 
+    "problemEscalation": "a string ...", 
+    "reason": "a string ...", 
+    "relatedEvent": [
+        {}
+    ], 
+    "relatedObject": [
+        {}
+    ], 
+    "relatedParty": [
+        {}
+    ], 
+    "resolutionDate": "2018-11-22T00:00", 
+    "status": "a string ...", 
+    "statusChangeDate": "2018-11-22T00:00", 
+    "statusChangeReason": "a string ...", 
+    "timeChanged": "2018-11-22T00:00", 
+    "timeRaised": "2018-11-22T00:00", 
+    "trackingRecord": [
+        {}
+    ], 
+    "underlyingAlarm": [
+        {}
+    ], 
+    "underlyingProblem": [
+        {}
+    ]
+}

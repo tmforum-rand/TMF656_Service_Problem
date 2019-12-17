@@ -1,0 +1,14 @@
+[
+    {
+        "id": "5351",
+        "href" : "https://mycsp.com:8080/tmf-api/serviceProblemManagement/v4/serviceProblem/5351",
+        "statusChangeDate": "2017-10-29T12:00:00.361Z",
+        "category": "supplier.originated"
+    },
+    {
+        "id": "5352",
+        "href" : "https://mycsp.com:8080/tmf-api/serviceProblemManagement/v4/serviceProblem/5352",
+        "name": "vDPI serial 1355445",
+        "category": "serviceProvider.originated"
+    }
+]
