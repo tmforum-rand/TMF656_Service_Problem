@@ -1,0 +1,44 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "ProblemUnacknowledgement.schema.json",
+    "title": "ProblemUnacknowledgement",
+    "definitions": {
+        "ProblemUnacknowledgement": {
+            "type": "object",
+            "description": "Task resource that requests unacknowledgement of problems, rolling back the status of the problems from Acknowledged to Submitted.",
+            "properties": {
+                "href": {
+                    "type": "string",
+                    "description": "Reference to this task resource"
+                },
+                "id": {
+                    "type": "string",
+                    "description": "Unique identifier of this task resource"
+                },
+                "problem": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "ServiceProblemRef.schema.json#/definitions/ServiceProblemRef"
+                    },
+                    "description": "The problems to be unacknowledged, relevant in the input to this task"
+                },
+                "trackingRecord": {
+                    "$ref": "TrackingRecord.schema.json#/definitions/TrackingRecord",
+                    "description": "A record of the action taken in this acknowledgement"
+                },
+                "unackProblem": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "ServiceProblemRef.schema.json#/definitions/ServiceProblemRef"
+                    },
+                    "description": "The problems that were unacknowledged, populated in the output to this task"
+                }
+            },
+            "allOf": [
+                {
+                    "$ref": "Entity.schema.json#/Entity"
+                }
+            ]
+        }
+    }
+}

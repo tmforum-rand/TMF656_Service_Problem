@@ -1,0 +1,34 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "TroubleTicketRef.schema.json",
+    "title": "TroubleTicketRef",
+    "definitions": {
+        "TroubleTicketRef": {
+            "type": "object",
+            "description": "TroubleTicket reference, for when a Trouble Ticket is used by other entities",
+            "properties": {
+                "@referredType": {
+                    "type": "string",
+                    "description": "The actual type of the target instance when needed for disambiguation."
+                },
+                "href": {
+                    "type": "string",
+                    "description": "Reference of the related entity."
+                },
+                "id": {
+                    "type": "string",
+                    "description": "Unique identifier of a related entity."
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Name of the related entity."
+                }
+            },
+            "allOf": [
+                {
+                    "$ref": "Entity.schema.json#/Entity"
+                }
+            ]
+        }
+    }
+}

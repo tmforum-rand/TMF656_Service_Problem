@@ -1,0 +1,48 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "ServiceProblemEventRecord.schema.json",
+    "title": "ServiceProblemEventRecord",
+    "definitions": {
+        "ServiceProblemEventRecord": {
+            "type": "object",
+            "description": "A record of an event (related to a service problem) received from another system",
+            "properties": {
+                "eventTime": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Time at which the event occurred"
+                },
+                "eventType": {
+                    "type": "string",
+                    "description": "Type of the recorded event"
+                },
+                "href": {
+                    "type": "string",
+                    "description": "reference to this resource"
+                },
+                "id": {
+                    "type": "string",
+                    "description": "Identifier of the service problem event record."
+                },
+                "notification": {
+                    "$ref": "Any.schema.json#/definitions/Any",
+                    "description": "A notification from the possible notifications for Service Problem (such as creation, status change, information required, change)"
+                },
+                "recordTime": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Time at which the record was created"
+                },
+                "serviceProblem": {
+                    "$ref": "ServiceProblemRef.schema.json#/definitions/ServiceProblemRef",
+                    "description": "The service problem to which this record applies"
+                }
+            },
+            "allOf": [
+                {
+                    "$ref": "Entity.schema.json#/Entity"
+                }
+            ]
+        }
+    }
+}

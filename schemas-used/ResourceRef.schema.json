@@ -1,0 +1,37 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "ResourceRef.schema.json",
+    "title": "ResourceRef",
+    "definitions": {
+        "ResourceRef": {
+            "type": "object",
+            "properties": {
+                "@referredType": {
+                    "type": "string",
+                    "description": "The actual type of the target instance when needed for disambiguation."
+                },
+                "href": {
+                    "type": "string",
+                    "description": "Reference of the related entity."
+                },
+                "id": {
+                    "type": "string",
+                    "description": "Unique identifier of a related entity."
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Name of the resource"
+                },
+                "value": {
+                    "type": "string",
+                    "description": "The resource value that can be used to identify a resource with a public key (e.g.: a tel nr, an msisdn)"
+                }
+            },
+            "allOf": [
+                {
+                    "$ref": "Entity.schema.json#/Entity"
+                }
+            ]
+        }
+    }
+}

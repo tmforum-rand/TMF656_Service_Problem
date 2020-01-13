@@ -1,0 +1,42 @@
+@startuml
+hide circle
+hide methods
+hide stereotype
+show <<Enumeration>> stereotype
+skinparam class {
+   BackgroundColor<<Enumeration>> #E6F5F7
+   BackgroundColor<<Ref>> #FFFFE0
+   BackgroundColor<<Pivot>> #FFFFFFF
+   BackgroundColor #FCF2E3
+}
+
+class ServiceProblemEventRecord <<Pivot>> {
+    id : String
+    href : String
+    eventTime : DateTime
+    eventType : String
+    recordTime : DateTime
+    notification : Any
+    @baseType : String
+    @schemaLocation : Uri
+    @type : String
+}
+
+class ServiceProblemRef <<Ref>> {
+    id : String
+    href : String
+    correlationId : String
+    @baseType : String
+    @schemaLocation : Uri
+    @type : String
+    @referredType : String
+}
+
+
+'processing edges for ServiceProblemEventRecord
+ServiceProblemEventRecord *-->  "0..1" ServiceProblemRef : serviceProblem
+' rule: General below rule - either none already or unable to place left / right of currently placed
+'completed processing of edges for ServiceProblemEventRecord
+
+'processing edges for ServiceProblemRef
+@enduml

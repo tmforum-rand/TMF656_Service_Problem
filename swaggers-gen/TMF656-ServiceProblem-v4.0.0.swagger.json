@@ -1,0 +1,3203 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Service Problem Management",
+        "description": "## TMF API Reference: TMF656 - Service Problem Management\n\n### Release : 18.5 - December 2018\n\nService Problem Management API goal is to provide the ability to manage problems in the Service domain. \n\n### Resource \n- serviceProblem\n\n### Operations\nService Problem Management API performs the following operations on the resource :\n- Retrieve an entity or a collection of entities depending on filter criteria\n- Partial update of an entity (including updating rules)\n- Create an entity (including default values and creation rules)\n- Delete an entity (for administration purposes)\n- Manage notification of events",
+        "version": "4.0.0"
+    },
+    "host": "serverRoot",
+    "basePath": "/tmf-api/serviceProblemManagement/v4/",
+    "schemes": [
+        "https"
+    ],
+    "consumes": [
+        "application/json;charset=utf-8"
+    ],
+    "produces": [
+        "application/json;charset=utf-8"
+    ],
+    "tags": [
+        {
+            "name": "serviceProblem"
+        },
+        {
+            "name": "serviceProblemEventRecord"
+        },
+        {
+            "name": "problemAcknowledgement"
+        },
+        {
+            "name": "problemUnacknowledgement"
+        },
+        {
+            "name": "problemGroup"
+        },
+        {
+            "name": "problemUngroup"
+        },
+        {
+            "name": "notification listeners (client side)"
+        },
+        {
+            "name": "events subscription"
+        }
+    ],
+    "paths": {
+        "/serviceProblem": {
+            "get": {
+                "operationId": "listServiceProblem",
+                "summary": "List or find ServiceProblem objects",
+                "description": "This operation list or find ServiceProblem entities",
+                "tags": [
+                    "serviceProblem"
+                ],
+                "parameters": [
+                    {
+                        "name": "fields",
+                        "description": "Comma-separated properties to be provided in response",
+                        "required": false,
+                        "in": "query",
+                        "type": "string"
+                    },
+                    {
+                        "name": "offset",
+                        "description": "Requested index for start of resources to be provided in response",
+                        "required": false,
+                        "in": "query",
+                        "type": "integer"
+                    },
+                    {
+                        "name": "limit",
+                        "description": "Requested number of resources to be provided in response",
+                        "required": false,
+                        "in": "query",
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "headers": {
+                            "X-Result-Count": {
+                                "description": "Actual number of items returned in the response body",
+                                "type": "integer"
+                            },
+                            "X-Total-Count": {
+                                "description": "Total number of items matching criteria",
+                                "type": "integer"
+                            }
+                        },
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/ServiceProblem"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "405": {
+                        "description": "Method Not allowed",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "operationId": "createServiceProblem",
+                "summary": "Creates a ServiceProblem",
+                "description": "This operation creates a ServiceProblem entity.",
+                "tags": [
+                    "serviceProblem"
+                ],
+                "parameters": [
+                    {
+                        "name": "serviceProblem",
+                        "description": "The ServiceProblem to be created",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/ServiceProblem_Create"
+                        },
+                        "in": "body"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/ServiceProblem"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "405": {
+                        "description": "Method Not allowed",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/serviceProblem/{id}": {
+            "get": {
+                "operationId": "retrieveServiceProblem",
+                "summary": "Retrieves a ServiceProblem by ID",
+                "description": "This operation retrieves a ServiceProblem entity. Attribute selection is enabled for all first level attributes.",
+                "tags": [
+                    "serviceProblem"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "description": "Identifier of the ServiceProblem",
+                        "required": true,
+                        "type": "string",
+                        "in": "path"
+                    },
+                    {
+                        "name": "fields",
+                        "description": "Comma-separated properties to provide in response",
+                        "required": false,
+                        "type": "string",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/ServiceProblem"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "405": {
+                        "description": "Method Not allowed",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "operationId": "patchServiceProblem",
+                "summary": "Updates partially a ServiceProblem",
+                "description": "This operation updates partially a ServiceProblem entity.",
+                "tags": [
+                    "serviceProblem"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "description": "Identifier of the ServiceProblem",
+                        "required": true,
+                        "type": "string",
+                        "in": "path"
+                    },
+                    {
+                        "name": "serviceProblem",
+                        "description": "The ServiceProblem to be updated",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/ServiceProblem_Update"
+                        },
+                        "in": "body"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Updated",
+                        "schema": {
+                            "$ref": "#/definitions/ServiceProblem"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "405": {
+                        "description": "Method Not allowed",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "operationId": "deleteServiceProblem",
+                "summary": "Deletes a ServiceProblem",
+                "description": "This operation deletes a ServiceProblem entity.",
+                "tags": [
+                    "serviceProblem"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "description": "Identifier of the ServiceProblem",
+                        "required": true,
+                        "type": "string",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Deleted"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "405": {
+                        "description": "Method Not allowed",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/serviceProblemEventRecord": {
+            "get": {
+                "operationId": "listServiceProblemEventRecord",
+                "summary": "List or find ServiceProblemEventRecord objects",
+                "description": "This operation list or find ServiceProblemEventRecord entities",
+                "tags": [
+                    "serviceProblemEventRecord"
+                ],
+                "parameters": [
+                    {
+                        "name": "fields",
+                        "description": "Comma-separated properties to be provided in response",
+                        "required": false,
+                        "in": "query",
+                        "type": "string"
+                    },
+                    {
+                        "name": "offset",
+                        "description": "Requested index for start of resources to be provided in response",
+                        "required": false,
+                        "in": "query",
+                        "type": "integer"
+                    },
+                    {
+                        "name": "limit",
+                        "description": "Requested number of resources to be provided in response",
+                        "required": false,
+                        "in": "query",
+                        "type": "integer"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "headers": {
+                            "X-Result-Count": {
+                                "description": "Actual number of items returned in the response body",
+                                "type": "integer"
+                            },
+                            "X-Total-Count": {
+                                "description": "Total number of items matching criteria",
+                                "type": "integer"
+                            }
+                        },
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/ServiceProblemEventRecord"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "405": {
+                        "description": "Method Not allowed",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/serviceProblemEventRecord/{id}": {
+            "get": {
+                "operationId": "retrieveServiceProblemEventRecord",
+                "summary": "Retrieves a ServiceProblemEventRecord by ID",
+                "description": "This operation retrieves a ServiceProblemEventRecord entity. Attribute selection is enabled for all first level attributes.",
+                "tags": [
+                    "serviceProblemEventRecord"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "description": "Identifier of the ServiceProblemEventRecord",
+                        "required": true,
+                        "type": "string",
+                        "in": "path"
+                    },
+                    {
+                        "name": "fields",
+                        "description": "Comma-separated properties to provide in response",
+                        "required": false,
+                        "type": "string",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "schema": {
+                            "$ref": "#/definitions/ServiceProblemEventRecord"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "405": {
+                        "description": "Method Not allowed",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/problemAcknowledgement": {
+            "post": {
+                "operationId": "createProblemAcknowledgement",
+                "summary": "Creates a ProblemAcknowledgement",
+                "description": "This operation creates a ProblemAcknowledgement entity.",
+                "tags": [
+                    "problemAcknowledgement"
+                ],
+                "parameters": [
+                    {
+                        "name": "problemAcknowledgement",
+                        "description": "The ProblemAcknowledgement to be created",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/ProblemAcknowledgement_Create"
+                        },
+                        "in": "body"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/ProblemAcknowledgement"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "405": {
+                        "description": "Method Not allowed",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/problemAcknowledgement/{id}": {},
+        "/problemUnacknowledgement": {
+            "post": {
+                "operationId": "createProblemUnacknowledgement",
+                "summary": "Creates a ProblemUnacknowledgement",
+                "description": "This operation creates a ProblemUnacknowledgement entity.",
+                "tags": [
+                    "problemUnacknowledgement"
+                ],
+                "parameters": [
+                    {
+                        "name": "problemUnacknowledgement",
+                        "description": "The ProblemUnacknowledgement to be created",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/ProblemUnacknowledgement_Create"
+                        },
+                        "in": "body"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/ProblemUnacknowledgement"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "405": {
+                        "description": "Method Not allowed",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/problemUnacknowledgement/{id}": {},
+        "/problemGroup": {
+            "post": {
+                "operationId": "createProblemGroup",
+                "summary": "Creates a ProblemGroup",
+                "description": "This operation creates a ProblemGroup entity.",
+                "tags": [
+                    "problemGroup"
+                ],
+                "parameters": [
+                    {
+                        "name": "problemGroup",
+                        "description": "The ProblemGroup to be created",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/ProblemGroup_Create"
+                        },
+                        "in": "body"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/ProblemGroup"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "405": {
+                        "description": "Method Not allowed",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/problemGroup/{id}": {},
+        "/problemUngroup": {
+            "post": {
+                "operationId": "createProblemUngroup",
+                "summary": "Creates a ProblemUngroup",
+                "description": "This operation creates a ProblemUngroup entity.",
+                "tags": [
+                    "problemUngroup"
+                ],
+                "parameters": [
+                    {
+                        "name": "problemUngroup",
+                        "description": "The ProblemUngroup to be created",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/ProblemUngroup_Create"
+                        },
+                        "in": "body"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/ProblemUngroup"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "405": {
+                        "description": "Method Not allowed",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/problemUngroup/{id}": {},
+        "/hub": {
+            "post": {
+                "operationId": "registerListener",
+                "summary": "Register a listener",
+                "description": "Sets the communication endpoint address the service instance must use to deliver information about its health state, execution state, failures and metrics.",
+                "tags": [
+                    "events subscription"
+                ],
+                "parameters": [
+                    {
+                        "name": "data",
+                        "schema": {
+                            "$ref": "#/definitions/EventSubscriptionInput"
+                        },
+                        "required": true,
+                        "in": "body",
+                        "description": "Data containing the callback endpoint to deliver the information"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Subscribed",
+                        "schema": {
+                            "$ref": "#/definitions/EventSubscription"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "405": {
+                        "description": "Method Not allowed",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/hub/{id}": {
+            "delete": {
+                "operationId": "unregisterListener",
+                "summary": "Unregister a listener",
+                "description": "Resets the communication endpoint address the service instance must use to deliver information about its health state, execution state, failures and metrics.",
+                "tags": [
+                    "events subscription"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "type": "string",
+                        "required": true,
+                        "in": "path",
+                        "description": "The id of the registered listener"
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Deleted"
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "405": {
+                        "description": "Method not allowed",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/listener/serviceProblemCreateEvent": {
+            "post": {
+                "operationId": "listenToServiceProblemCreateEvent",
+                "summary": "Client listener for entity ServiceProblemCreateEvent",
+                "description": "Example of a client listener for receiving the notification ServiceProblemCreateEvent",
+                "tags": [
+                    "notification listeners (client side)"
+                ],
+                "parameters": [
+                    {
+                        "name": "data",
+                        "required": true,
+                        "in": "body",
+                        "description": "The event data",
+                        "schema": {
+                            "$ref": "#/definitions/ServiceProblemCreateEvent"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Notified",
+                        "schema": {
+                            "$ref": "#/definitions/EventSubscription"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "405": {
+                        "description": "Method Not allowed",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/listener/serviceProblemStateChangeEvent": {
+            "post": {
+                "operationId": "listenToServiceProblemStateChangeEvent",
+                "summary": "Client listener for entity ServiceProblemStateChangeEvent",
+                "description": "Example of a client listener for receiving the notification ServiceProblemStateChangeEvent",
+                "tags": [
+                    "notification listeners (client side)"
+                ],
+                "parameters": [
+                    {
+                        "name": "data",
+                        "required": true,
+                        "in": "body",
+                        "description": "The event data",
+                        "schema": {
+                            "$ref": "#/definitions/ServiceProblemStateChangeEvent"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Notified",
+                        "schema": {
+                            "$ref": "#/definitions/EventSubscription"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "405": {
+                        "description": "Method Not allowed",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/listener/serviceProblemAttributeValueChangeEvent": {
+            "post": {
+                "operationId": "listenToServiceProblemAttributeValueChangeEvent",
+                "summary": "Client listener for entity ServiceProblemAttributeValueChangeEvent",
+                "description": "Example of a client listener for receiving the notification ServiceProblemAttributeValueChangeEvent",
+                "tags": [
+                    "notification listeners (client side)"
+                ],
+                "parameters": [
+                    {
+                        "name": "data",
+                        "required": true,
+                        "in": "body",
+                        "description": "The event data",
+                        "schema": {
+                            "$ref": "#/definitions/ServiceProblemAttributeValueChangeEvent"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Notified",
+                        "schema": {
+                            "$ref": "#/definitions/EventSubscription"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "405": {
+                        "description": "Method Not allowed",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/listener/serviceProblemInformationRequiredEvent": {
+            "post": {
+                "operationId": "listenToServiceProblemInformationRequiredEvent",
+                "summary": "Client listener for entity ServiceProblemInformationRequiredEvent",
+                "description": "Example of a client listener for receiving the notification ServiceProblemInformationRequiredEvent",
+                "tags": [
+                    "notification listeners (client side)"
+                ],
+                "parameters": [
+                    {
+                        "name": "data",
+                        "required": true,
+                        "in": "body",
+                        "description": "The event data",
+                        "schema": {
+                            "$ref": "#/definitions/ServiceProblemInformationRequiredEvent"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Notified",
+                        "schema": {
+                            "$ref": "#/definitions/EventSubscription"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "405": {
+                        "description": "Method Not allowed",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Any": {},
+        "ChangeRequestRef": {
+            "type": "object",
+            "description": "Reference to a Change Request",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "The identifier of the change request"
+                },
+                "href": {
+                    "type": "string",
+                    "description": "The reference link to the change request"
+                },
+                "@baseType": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the super-class"
+                },
+                "@schemaLocation": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "A URI to a JSON-Schema file that defines additional attributes and relationships"
+                },
+                "@type": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the sub-class entity name"
+                },
+                "@referredType": {
+                    "type": "string",
+                    "description": "The actual type of the target instance when needed for disambiguation."
+                }
+            },
+            "required": [
+                "id"
+            ]
+        },
+        "Characteristic": {
+            "type": "object",
+            "description": "Describes a given characteristic of an object or entity through a name/value pair.",
+            "required": [
+                "name",
+                "value"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "Name of the characteristic"
+                },
+                "valueType": {
+                    "type": "string",
+                    "description": "Data type of the value of the characteristic"
+                },
+                "value": {
+                    "$ref": "#/definitions/Any",
+                    "description": "The value of the characteristic"
+                },
+                "@baseType": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the super-class"
+                },
+                "@schemaLocation": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "A URI to a JSON-Schema file that defines additional attributes and relationships"
+                },
+                "@type": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the sub-class entity name"
+                }
+            }
+        },
+        "EntityRef": {
+            "type": "object",
+            "description": "Entity reference schema to be use for all entityRef class.",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "Unique identifier of a related entity."
+                },
+                "href": {
+                    "type": "string",
+                    "description": "Reference of the related entity."
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Name of the related entity."
+                },
+                "@baseType": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the super-class"
+                },
+                "@schemaLocation": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "A URI to a JSON-Schema file that defines additional attributes and relationships"
+                },
+                "@type": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the sub-class entity name"
+                },
+                "@referredType": {
+                    "type": "string",
+                    "description": "The actual type of the target instance when needed for disambiguation."
+                }
+            },
+            "required": [
+                "id"
+            ]
+        },
+        "EventRef": {
+            "type": "object",
+            "description": "Events linked with service problem",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "ID of the event"
+                },
+                "href": {
+                    "type": "string",
+                    "description": "event reference"
+                },
+                "eventTime": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Time the event occurred"
+                },
+                "eventType": {
+                    "type": "string",
+                    "description": "Type of the event"
+                },
+                "@baseType": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the super-class"
+                },
+                "@schemaLocation": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "A URI to a JSON-Schema file that defines additional attributes and relationships"
+                },
+                "@type": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the sub-class entity name"
+                },
+                "@referredType": {
+                    "type": "string",
+                    "description": "The actual type of the target instance when needed for disambiguation."
+                }
+            },
+            "required": [
+                "id"
+            ]
+        },
+        "ImpactPattern": {
+            "type": "object",
+            "description": "Define the patterns of impact (optional), such as other service characteristics- Used when defining impact through another pattern than the pre-defined attributes",
+            "properties": {
+                "description": {
+                    "type": "string",
+                    "description": "Basic description of the impact pattern"
+                },
+                "extensionInfo": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Characteristic"
+                    },
+                    "description": "A generic list of any type of elements. Used for extensions or loose element encapsulation from other namespaces"
+                },
+                "@baseType": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the super-class"
+                },
+                "@schemaLocation": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "A URI to a JSON-Schema file that defines additional attributes and relationships"
+                },
+                "@type": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the sub-class entity name"
+                }
+            }
+        },
+        "Note": {
+            "type": "object",
+            "description": "Extra information about a given entity",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "Identifier of the note within its containing entity (may or may not be globally unique, depending on provider implementation)"
+                },
+                "author": {
+                    "type": "string",
+                    "description": "Author of the note"
+                },
+                "date": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Date of the note"
+                },
+                "text": {
+                    "type": "string",
+                    "description": "Text of the note"
+                },
+                "@baseType": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the super-class"
+                },
+                "@schemaLocation": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "A URI to a JSON-Schema file that defines additional attributes and relationships"
+                },
+                "@type": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the sub-class entity name"
+                }
+            }
+        },
+        "Place": {
+            "type": "object",
+            "description": "Place reference. Place defines the places where the products are sold or delivered.",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "Unique identifier of the place"
+                },
+                "href": {
+                    "type": "string",
+                    "description": "Unique reference of the place"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "A user-friendly name for the place, such as [Paris Store], [London Store], [Main Home]"
+                },
+                "@baseType": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the super-class"
+                },
+                "@schemaLocation": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "A URI to a JSON-Schema file that defines additional attributes and relationships"
+                },
+                "@type": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the sub-class entity name"
+                }
+            }
+        },
+        "ProblemAcknowledgement": {
+            "type": "object",
+            "description": "Task resource that requests acknowledgement of problems by the problem handler.",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "Unique identifier of this task resource"
+                },
+                "href": {
+                    "type": "string",
+                    "description": "Reference to this task resource"
+                },
+                "ackProblem": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ServiceProblemRef"
+                    },
+                    "description": "The problems that were acknowledged, populated in the output to this task"
+                },
+                "problem": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ServiceProblemRef"
+                    },
+                    "description": "The problems to be acknowledged, relevant in the input to this task"
+                },
+                "trackingRecord": {
+                    "$ref": "#/definitions/TrackingRecord",
+                    "description": "A record of the action taken in this acknowledgement"
+                },
+                "@baseType": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the super-class"
+                },
+                "@schemaLocation": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "A URI to a JSON-Schema file that defines additional attributes and relationships"
+                },
+                "@type": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the sub-class entity name"
+                }
+            }
+        },
+        "ProblemAcknowledgement_Create": {
+            "type": "object",
+            "description": "Task resource that requests acknowledgement of problems by the problem handler.\nSkipped properties: id,href",
+            "required": [
+                "problem"
+            ],
+            "properties": {
+                "ackProblem": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ServiceProblemRef"
+                    },
+                    "description": "The problems that were acknowledged, populated in the output to this task"
+                },
+                "problem": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ServiceProblemRef"
+                    },
+                    "minItems": 1,
+                    "description": "The problems to be acknowledged, relevant in the input to this task"
+                },
+                "trackingRecord": {
+                    "$ref": "#/definitions/TrackingRecord",
+                    "description": "A record of the action taken in this acknowledgement"
+                },
+                "@baseType": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the super-class"
+                },
+                "@schemaLocation": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "A URI to a JSON-Schema file that defines additional attributes and relationships"
+                },
+                "@type": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the sub-class entity name"
+                }
+            }
+        },
+        "ProblemGroup": {
+            "type": "object",
+            "description": "Task resource that requests Service Problems to be grouped together into a parent and set of children",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "Unique identifier of this task resource"
+                },
+                "href": {
+                    "type": "string",
+                    "description": "Reference to this task resource"
+                },
+                "childProblem": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ServiceProblemRef"
+                    },
+                    "description": "List of problems to be grouped under a parent problem"
+                },
+                "parentProblem": {
+                    "$ref": "#/definitions/ServiceProblemRef",
+                    "description": "The parent problem to which the problems are to be grouped"
+                },
+                "@baseType": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the super-class"
+                },
+                "@schemaLocation": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "A URI to a JSON-Schema file that defines additional attributes and relationships"
+                },
+                "@type": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the sub-class entity name"
+                }
+            }
+        },
+        "ProblemGroup_Create": {
+            "type": "object",
+            "description": "Task resource that requests Service Problems to be grouped together into a parent and set of children\nSkipped properties: id,href",
+            "required": [
+                "parentProblem",
+                "childProblem"
+            ],
+            "properties": {
+                "childProblem": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ServiceProblemRef"
+                    },
+                    "minItems": 1,
+                    "description": "List of problems to be grouped under a parent problem"
+                },
+                "parentProblem": {
+                    "$ref": "#/definitions/ServiceProblemRef",
+                    "description": "The parent problem to which the problems are to be grouped"
+                },
+                "@baseType": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the super-class"
+                },
+                "@schemaLocation": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "A URI to a JSON-Schema file that defines additional attributes and relationships"
+                },
+                "@type": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the sub-class entity name"
+                }
+            }
+        },
+        "ProblemUnacknowledgement": {
+            "type": "object",
+            "description": "Task resource that requests unacknowledgement of problems, rolling back the status of the problems from Acknowledged to Submitted.",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "Unique identifier of this task resource"
+                },
+                "href": {
+                    "type": "string",
+                    "description": "Reference to this task resource"
+                },
+                "problem": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ServiceProblemRef"
+                    },
+                    "description": "The problems to be unacknowledged, relevant in the input to this task"
+                },
+                "trackingRecord": {
+                    "$ref": "#/definitions/TrackingRecord",
+                    "description": "A record of the action taken in this acknowledgement"
+                },
+                "unackProblem": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ServiceProblemRef"
+                    },
+                    "description": "The problems that were unacknowledged, populated in the output to this task"
+                },
+                "@baseType": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the super-class"
+                },
+                "@schemaLocation": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "A URI to a JSON-Schema file that defines additional attributes and relationships"
+                },
+                "@type": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the sub-class entity name"
+                }
+            }
+        },
+        "ProblemUnacknowledgement_Create": {
+            "type": "object",
+            "description": "Task resource that requests unacknowledgement of problems, rolling back the status of the problems from Acknowledged to Submitted.\nSkipped properties: id,href",
+            "required": [
+                "problem"
+            ],
+            "properties": {
+                "problem": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ServiceProblemRef"
+                    },
+                    "minItems": 1,
+                    "description": "The problems to be unacknowledged, relevant in the input to this task"
+                },
+                "trackingRecord": {
+                    "$ref": "#/definitions/TrackingRecord",
+                    "description": "A record of the action taken in this acknowledgement"
+                },
+                "unackProblem": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ServiceProblemRef"
+                    },
+                    "description": "The problems that were unacknowledged, populated in the output to this task"
+                },
+                "@baseType": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the super-class"
+                },
+                "@schemaLocation": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "A URI to a JSON-Schema file that defines additional attributes and relationships"
+                },
+                "@type": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the sub-class entity name"
+                }
+            }
+        },
+        "ProblemUngroup": {
+            "type": "object",
+            "description": "Task resource that requests Service Problems to be ungrouped from a parent",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "Unique identifier of this task resource"
+                },
+                "href": {
+                    "type": "string",
+                    "description": "Reference to this task resource"
+                },
+                "childProblem": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ServiceProblemRef"
+                    },
+                    "description": "List of problems to be ungrouped from a parent problem"
+                },
+                "parentProblem": {
+                    "$ref": "#/definitions/ServiceProblemRef",
+                    "description": "The parent problem from which the problems are to be ungrouped"
+                },
+                "@baseType": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the super-class"
+                },
+                "@schemaLocation": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "A URI to a JSON-Schema file that defines additional attributes and relationships"
+                },
+                "@type": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the sub-class entity name"
+                }
+            }
+        },
+        "ProblemUngroup_Create": {
+            "type": "object",
+            "description": "Task resource that requests Service Problems to be ungrouped from a parent\nSkipped properties: id,href",
+            "required": [
+                "parentProblem",
+                "childProblem"
+            ],
+            "properties": {
+                "childProblem": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ServiceProblemRef"
+                    },
+                    "minItems": 1,
+                    "description": "List of problems to be ungrouped from a parent problem"
+                },
+                "parentProblem": {
+                    "$ref": "#/definitions/ServiceProblemRef",
+                    "description": "The parent problem from which the problems are to be ungrouped"
+                },
+                "@baseType": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the super-class"
+                },
+                "@schemaLocation": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "A URI to a JSON-Schema file that defines additional attributes and relationships"
+                },
+                "@type": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the sub-class entity name"
+                }
+            }
+        },
+        "RelatedEntityRef": {
+            "type": "object",
+            "description": "A reference to an entity, where the type of the entity is not known in advance.",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "The identifier of an entity."
+                },
+                "href": {
+                    "type": "string",
+                    "description": "The hyperlink to access an entity."
+                },
+                "name": {
+                    "type": "string",
+                    "description": "The name of an entity."
+                },
+                "@baseType": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the super-class"
+                },
+                "@schemaLocation": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "A URI to a JSON-Schema file that defines additional attributes and relationships"
+                },
+                "@type": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the sub-class entity name"
+                },
+                "@referredType": {
+                    "type": "string",
+                    "description": "The actual type of the target instance when needed for disambiguation."
+                }
+            },
+            "required": [
+                "id"
+            ]
+        },
+        "RelatedParty": {
+            "type": "object",
+            "description": "Related Entity reference. A related party defines party or party role linked to a specific entity.",
+            "required": [
+                "@referredType",
+                "id"
+            ],
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "Unique identifier of a related entity."
+                },
+                "href": {
+                    "type": "string",
+                    "description": "Reference of the related entity."
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Name of the related entity."
+                },
+                "role": {
+                    "type": "string",
+                    "description": "Role played by the related party"
+                },
+                "@baseType": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the super-class"
+                },
+                "@schemaLocation": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "A URI to a JSON-Schema file that defines additional attributes and relationships"
+                },
+                "@type": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the sub-class entity name"
+                },
+                "@referredType": {
+                    "type": "string",
+                    "description": "The actual type of the target instance when needed for disambiguation."
+                }
+            }
+        },
+        "ResourceAlarmRef": {
+            "type": "object",
+            "description": "A set of alarm ids identifying the alarms that are underlying this problem.",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "Unique identifier of the Alarm"
+                },
+                "href": {
+                    "type": "string",
+                    "description": "Reference of the Alarm"
+                },
+                "changeRequest": {
+                    "$ref": "#/definitions/ChangeRequestRef"
+                },
+                "@baseType": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the super-class"
+                },
+                "@schemaLocation": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "A URI to a JSON-Schema file that defines additional attributes and relationships"
+                },
+                "@type": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the sub-class entity name"
+                },
+                "@referredType": {
+                    "type": "string",
+                    "description": "The actual type of the target instance when needed for disambiguation."
+                }
+            },
+            "required": [
+                "id"
+            ]
+        },
+        "ResourceRef": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "Unique identifier of a related entity."
+                },
+                "href": {
+                    "type": "string",
+                    "description": "Reference of the related entity."
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Name of the resource"
+                },
+                "value": {
+                    "type": "string",
+                    "description": "The resource value that can be used to identify a resource with a public key (e.g.: a tel nr, an msisdn)"
+                },
+                "@baseType": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the super-class"
+                },
+                "@schemaLocation": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "A URI to a JSON-Schema file that defines additional attributes and relationships"
+                },
+                "@type": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the sub-class entity name"
+                },
+                "@referredType": {
+                    "type": "string",
+                    "description": "The actual type of the target instance when needed for disambiguation."
+                }
+            },
+            "required": [
+                "id"
+            ]
+        },
+        "SLAViolationRef": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "href": {
+                    "type": "string"
+                },
+                "@baseType": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the super-class"
+                },
+                "@schemaLocation": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "A URI to a JSON-Schema file that defines additional attributes and relationships"
+                },
+                "@type": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the sub-class entity name"
+                },
+                "@referredType": {
+                    "type": "string",
+                    "description": "The actual type of the target instance when needed for disambiguation."
+                }
+            },
+            "required": [
+                "id"
+            ]
+        },
+        "ServiceProblem": {
+            "type": "object",
+            "description": "The problem information for Middle B which is abstracted in the service layer from the issued event information by First B",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "Identifier of the service problem"
+                },
+                "href": {
+                    "type": "string",
+                    "description": "Reference to the Service Problem"
+                },
+                "affectedNumberOfServices": {
+                    "type": "integer",
+                    "description": "Number of affected services"
+                },
+                "category": {
+                    "type": "string",
+                    "description": "Classifier for the problem. Settable. For example, this is used for distinguish the category of problem originator in [role].[category] format. Example: serviceProvider.declarer, supplier.originated, system.originated"
+                },
+                "correlationId": {
+                    "type": "string",
+                    "description": "Additional identifier coming from an external system"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Free form text describing the Service Problem"
+                },
+                "impactImportanceFactor": {
+                    "type": "string",
+                    "description": "Impact Importance is characterized by an Impact Importance Factor: overall importance of the impact of all the affected services, e.g. 0 (zero impact) to 100 (worst impact). The Impact Importance is a calculated field which is set by the OSS determining the impact."
+                },
+                "originatingSystem": {
+                    "type": "string",
+                    "description": "Indicates where the problem was generated"
+                },
+                "priority": {
+                    "type": "integer",
+                    "description": "An indication varying from 1 (highest) to 10 (lowest) of how important it is for the service provider to correct the Service Problem."
+                },
+                "problemEscalation": {
+                    "type": "string",
+                    "description": "Indicates if this service problem has been escalated or not. Possible values are 0 to 10. A value of zero means no escalation. The meanings of values 1-10 are to be determined by the user of the interface, but they show increasing levels of escalation."
+                },
+                "reason": {
+                    "type": "string",
+                    "description": "Free text or optionally structured text. It can be Unknown."
+                },
+                "resolutionDate": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Time the problem was resolved"
+                },
+                "status": {
+                    "type": "string",
+                    "description": "The current status of the service problem. Possible values are Submitted, Rejected, Acknowledged, In Progress [Held, Pending], Resolved, Closed, and Cancelled."
+                },
+                "statusChangeDate": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Time the problem was last status changed"
+                },
+                "statusChangeReason": {
+                    "type": "string",
+                    "description": "The reason of state change"
+                },
+                "timeChanged": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Time the problem was last changed"
+                },
+                "timeRaised": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Time the problem was raised"
+                },
+                "affectedLocation": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Place"
+                    },
+                    "description": "A list of the locations affected by the problem. At least one of affectedResource, affectedService or affectedLocation should be present."
+                },
+                "affectedResource": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ResourceRef"
+                    },
+                    "description": "A list of the resources affected by the problem. At least one of affectedResource, affectedService or affectedLocation should be present."
+                },
+                "affectedService": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ServiceRef"
+                    },
+                    "description": "List of affected services. At least one of affectedResource, affectedService or affectedLocation should be present."
+                },
+                "associatedSLAViolation": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/SLAViolationRef"
+                    },
+                    "description": "A List of SLA violations associated with this problem."
+                },
+                "associatedTroubleTicket": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/TroubleTicketRef"
+                    },
+                    "description": "A list of trouble tickets associated with this problem."
+                },
+                "comment": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Note"
+                    },
+                    "description": "A list of comments or notes made on the problem"
+                },
+                "extensionInfo": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Characteristic"
+                    },
+                    "description": "A generic list of any type of elements. Used for vendor Extensions or loose element encapsulation from other namespaces"
+                },
+                "firstAlert": {
+                    "$ref": "#/definitions/RelatedEntityRef",
+                    "description": "Indicates what first alerted the system to the problem. It is not the root cause of the Service Problem. Examples: Threshold crossing alert"
+                },
+                "impactPatterns": {
+                    "$ref": "#/definitions/ImpactPattern",
+                    "description": "Define the patterns of impact (optional)- e.g. other service characteristics- Used when defining impact through another pattern than the predefined attributes."
+                },
+                "originatorParty": {
+                    "$ref": "#/definitions/RelatedParty",
+                    "description": "Individual or organization that created the problem"
+                },
+                "parentProblem": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ServiceProblemRef"
+                    },
+                    "description": "The parent problem to which this problem is attached."
+                },
+                "relatedEvent": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/EventRef"
+                    },
+                    "description": "List of events associated to this problem"
+                },
+                "relatedObject": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/RelatedEntityRef"
+                    },
+                    "description": "List of objects associated to this problem"
+                },
+                "relatedParty": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/RelatedParty"
+                    },
+                    "description": "List of parties or party roles playing a role within the service problem"
+                },
+                "responsibleParty": {
+                    "$ref": "#/definitions/RelatedParty",
+                    "description": "Individual or organization responsible for handling this problem"
+                },
+                "rootCauseResource": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ResourceRef"
+                    },
+                    "description": "Resource(s) that are associated to the underlying service problems that are the Root Cause of this one if any (used only if applicable)."
+                },
+                "rootCauseService": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ServiceRef"
+                    },
+                    "description": "Service(s) that are associated to the underlying service problems that are the Root Cause of this one if any (used only if applicable)"
+                },
+                "trackingRecord": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/TrackingRecord"
+                    },
+                    "description": "List of tracking records that allow the tracking of modifications on the problem.The tracking records should not be embedded in the problem to allow retrieving the problem without the tracking records"
+                },
+                "underlyingAlarm": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ResourceAlarmRef"
+                    },
+                    "description": "A list of alarms underlying this problem."
+                },
+                "underlyingProblem": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ServiceProblemRef"
+                    },
+                    "description": "A list of underlying problems. Relevant only if this problem is derived from other problems."
+                },
+                "@baseType": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the super-class"
+                },
+                "@schemaLocation": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "A URI to a JSON-Schema file that defines additional attributes and relationships"
+                },
+                "@type": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the sub-class entity name"
+                }
+            }
+        },
+        "ServiceProblem_Create": {
+            "type": "object",
+            "description": "The problem information for Middle B which is abstracted in the service layer from the issued event information by First B\nSkipped properties: id,href",
+            "required": [
+                "category",
+                "priority",
+                "description",
+                "reason",
+                "originatorParty"
+            ],
+            "properties": {
+                "affectedNumberOfServices": {
+                    "type": "integer",
+                    "description": "Number of affected services"
+                },
+                "category": {
+                    "type": "string",
+                    "description": "Classifier for the problem. Settable. For example, this is used for distinguish the category of problem originator in [role].[category] format. Example: serviceProvider.declarer, supplier.originated, system.originated"
+                },
+                "correlationId": {
+                    "type": "string",
+                    "description": "Additional identifier coming from an external system"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Free form text describing the Service Problem"
+                },
+                "impactImportanceFactor": {
+                    "type": "string",
+                    "description": "Impact Importance is characterized by an Impact Importance Factor: overall importance of the impact of all the affected services, e.g. 0 (zero impact) to 100 (worst impact). The Impact Importance is a calculated field which is set by the OSS determining the impact."
+                },
+                "originatingSystem": {
+                    "type": "string",
+                    "description": "Indicates where the problem was generated"
+                },
+                "priority": {
+                    "type": "integer",
+                    "description": "An indication varying from 1 (highest) to 10 (lowest) of how important it is for the service provider to correct the Service Problem."
+                },
+                "problemEscalation": {
+                    "type": "string",
+                    "description": "Indicates if this service problem has been escalated or not. Possible values are 0 to 10. A value of zero means no escalation. The meanings of values 1-10 are to be determined by the user of the interface, but they show increasing levels of escalation."
+                },
+                "reason": {
+                    "type": "string",
+                    "description": "Free text or optionally structured text. It can be Unknown."
+                },
+                "resolutionDate": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Time the problem was resolved"
+                },
+                "status": {
+                    "type": "string",
+                    "description": "The current status of the service problem. Possible values are Submitted, Rejected, Acknowledged, In Progress [Held, Pending], Resolved, Closed, and Cancelled."
+                },
+                "statusChangeDate": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Time the problem was last status changed"
+                },
+                "statusChangeReason": {
+                    "type": "string",
+                    "description": "The reason of state change"
+                },
+                "timeChanged": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Time the problem was last changed"
+                },
+                "timeRaised": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Time the problem was raised"
+                },
+                "affectedLocation": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Place"
+                    },
+                    "description": "A list of the locations affected by the problem. At least one of affectedResource, affectedService or affectedLocation should be present."
+                },
+                "affectedResource": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ResourceRef"
+                    },
+                    "description": "A list of the resources affected by the problem. At least one of affectedResource, affectedService or affectedLocation should be present."
+                },
+                "affectedService": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ServiceRef"
+                    },
+                    "description": "List of affected services. At least one of affectedResource, affectedService or affectedLocation should be present."
+                },
+                "associatedSLAViolation": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/SLAViolationRef"
+                    },
+                    "description": "A List of SLA violations associated with this problem."
+                },
+                "associatedTroubleTicket": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/TroubleTicketRef"
+                    },
+                    "description": "A list of trouble tickets associated with this problem."
+                },
+                "comment": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Note"
+                    },
+                    "description": "A list of comments or notes made on the problem"
+                },
+                "extensionInfo": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Characteristic"
+                    },
+                    "description": "A generic list of any type of elements. Used for vendor Extensions or loose element encapsulation from other namespaces"
+                },
+                "firstAlert": {
+                    "$ref": "#/definitions/RelatedEntityRef",
+                    "description": "Indicates what first alerted the system to the problem. It is not the root cause of the Service Problem. Examples: Threshold crossing alert"
+                },
+                "impactPatterns": {
+                    "$ref": "#/definitions/ImpactPattern",
+                    "description": "Define the patterns of impact (optional)- e.g. other service characteristics- Used when defining impact through another pattern than the predefined attributes."
+                },
+                "originatorParty": {
+                    "$ref": "#/definitions/RelatedParty",
+                    "description": "Individual or organization that created the problem"
+                },
+                "parentProblem": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ServiceProblemRef"
+                    },
+                    "description": "The parent problem to which this problem is attached."
+                },
+                "relatedEvent": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/EventRef"
+                    },
+                    "description": "List of events associated to this problem"
+                },
+                "relatedObject": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/RelatedEntityRef"
+                    },
+                    "description": "List of objects associated to this problem"
+                },
+                "relatedParty": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/RelatedParty"
+                    },
+                    "description": "List of parties or party roles playing a role within the service problem"
+                },
+                "responsibleParty": {
+                    "$ref": "#/definitions/RelatedParty",
+                    "description": "Individual or organization responsible for handling this problem"
+                },
+                "rootCauseResource": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ResourceRef"
+                    },
+                    "description": "Resource(s) that are associated to the underlying service problems that are the Root Cause of this one if any (used only if applicable)."
+                },
+                "rootCauseService": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ServiceRef"
+                    },
+                    "description": "Service(s) that are associated to the underlying service problems that are the Root Cause of this one if any (used only if applicable)"
+                },
+                "trackingRecord": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/TrackingRecord"
+                    },
+                    "description": "List of tracking records that allow the tracking of modifications on the problem.The tracking records should not be embedded in the problem to allow retrieving the problem without the tracking records"
+                },
+                "underlyingAlarm": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ResourceAlarmRef"
+                    },
+                    "description": "A list of alarms underlying this problem."
+                },
+                "underlyingProblem": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ServiceProblemRef"
+                    },
+                    "description": "A list of underlying problems. Relevant only if this problem is derived from other problems."
+                },
+                "@baseType": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the super-class"
+                },
+                "@schemaLocation": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "A URI to a JSON-Schema file that defines additional attributes and relationships"
+                },
+                "@type": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the sub-class entity name"
+                }
+            }
+        },
+        "ServiceProblem_Update": {
+            "type": "object",
+            "description": "The problem information for Middle B which is abstracted in the service layer from the issued event information by First B\nSkipped properties: id,href,correlationId,firstAlert,originatingSystem,timeRaised,trackingRecord",
+            "properties": {
+                "affectedNumberOfServices": {
+                    "type": "integer",
+                    "description": "Number of affected services"
+                },
+                "category": {
+                    "type": "string",
+                    "description": "Classifier for the problem. Settable. For example, this is used for distinguish the category of problem originator in [role].[category] format. Example: serviceProvider.declarer, supplier.originated, system.originated"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Free form text describing the Service Problem"
+                },
+                "impactImportanceFactor": {
+                    "type": "string",
+                    "description": "Impact Importance is characterized by an Impact Importance Factor: overall importance of the impact of all the affected services, e.g. 0 (zero impact) to 100 (worst impact). The Impact Importance is a calculated field which is set by the OSS determining the impact."
+                },
+                "priority": {
+                    "type": "integer",
+                    "description": "An indication varying from 1 (highest) to 10 (lowest) of how important it is for the service provider to correct the Service Problem."
+                },
+                "problemEscalation": {
+                    "type": "string",
+                    "description": "Indicates if this service problem has been escalated or not. Possible values are 0 to 10. A value of zero means no escalation. The meanings of values 1-10 are to be determined by the user of the interface, but they show increasing levels of escalation."
+                },
+                "reason": {
+                    "type": "string",
+                    "description": "Free text or optionally structured text. It can be Unknown."
+                },
+                "resolutionDate": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Time the problem was resolved"
+                },
+                "status": {
+                    "type": "string",
+                    "description": "The current status of the service problem. Possible values are Submitted, Rejected, Acknowledged, In Progress [Held, Pending], Resolved, Closed, and Cancelled."
+                },
+                "statusChangeDate": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Time the problem was last status changed"
+                },
+                "statusChangeReason": {
+                    "type": "string",
+                    "description": "The reason of state change"
+                },
+                "timeChanged": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Time the problem was last changed"
+                },
+                "affectedLocation": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Place"
+                    },
+                    "description": "A list of the locations affected by the problem. At least one of affectedResource, affectedService or affectedLocation should be present."
+                },
+                "affectedResource": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ResourceRef"
+                    },
+                    "description": "A list of the resources affected by the problem. At least one of affectedResource, affectedService or affectedLocation should be present."
+                },
+                "affectedService": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ServiceRef"
+                    },
+                    "description": "List of affected services. At least one of affectedResource, affectedService or affectedLocation should be present."
+                },
+                "associatedSLAViolation": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/SLAViolationRef"
+                    },
+                    "description": "A List of SLA violations associated with this problem."
+                },
+                "associatedTroubleTicket": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/TroubleTicketRef"
+                    },
+                    "description": "A list of trouble tickets associated with this problem."
+                },
+                "comment": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Note"
+                    },
+                    "description": "A list of comments or notes made on the problem"
+                },
+                "extensionInfo": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Characteristic"
+                    },
+                    "description": "A generic list of any type of elements. Used for vendor Extensions or loose element encapsulation from other namespaces"
+                },
+                "impactPatterns": {
+                    "$ref": "#/definitions/ImpactPattern",
+                    "description": "Define the patterns of impact (optional)- e.g. other service characteristics- Used when defining impact through another pattern than the predefined attributes."
+                },
+                "originatorParty": {
+                    "$ref": "#/definitions/RelatedParty",
+                    "description": "Individual or organization that created the problem"
+                },
+                "parentProblem": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ServiceProblemRef"
+                    },
+                    "description": "The parent problem to which this problem is attached."
+                },
+                "relatedEvent": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/EventRef"
+                    },
+                    "description": "List of events associated to this problem"
+                },
+                "relatedObject": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/RelatedEntityRef"
+                    },
+                    "description": "List of objects associated to this problem"
+                },
+                "relatedParty": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/RelatedParty"
+                    },
+                    "description": "List of parties or party roles playing a role within the service problem"
+                },
+                "responsibleParty": {
+                    "$ref": "#/definitions/RelatedParty",
+                    "description": "Individual or organization responsible for handling this problem"
+                },
+                "rootCauseResource": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ResourceRef"
+                    },
+                    "description": "Resource(s) that are associated to the underlying service problems that are the Root Cause of this one if any (used only if applicable)."
+                },
+                "rootCauseService": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ServiceRef"
+                    },
+                    "description": "Service(s) that are associated to the underlying service problems that are the Root Cause of this one if any (used only if applicable)"
+                },
+                "underlyingAlarm": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ResourceAlarmRef"
+                    },
+                    "description": "A list of alarms underlying this problem."
+                },
+                "underlyingProblem": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ServiceProblemRef"
+                    },
+                    "description": "A list of underlying problems. Relevant only if this problem is derived from other problems."
+                },
+                "@baseType": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the super-class"
+                },
+                "@schemaLocation": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "A URI to a JSON-Schema file that defines additional attributes and relationships"
+                },
+                "@type": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the sub-class entity name"
+                }
+            }
+        },
+        "ServiceProblemEventRecord": {
+            "type": "object",
+            "description": "A record of an event (related to a service problem) received from another system",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "Identifier of the service problem event record."
+                },
+                "href": {
+                    "type": "string",
+                    "description": "reference to this resource"
+                },
+                "eventTime": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Time at which the event occurred"
+                },
+                "eventType": {
+                    "type": "string",
+                    "description": "Type of the recorded event"
+                },
+                "recordTime": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Time at which the record was created"
+                },
+                "notification": {
+                    "$ref": "#/definitions/Any",
+                    "description": "A notification from the possible notifications for Service Problem (such as creation, status change, information required, change)"
+                },
+                "serviceProblem": {
+                    "$ref": "#/definitions/ServiceProblemRef",
+                    "description": "The service problem to which this record applies"
+                },
+                "@baseType": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the super-class"
+                },
+                "@schemaLocation": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "A URI to a JSON-Schema file that defines additional attributes and relationships"
+                },
+                "@type": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the sub-class entity name"
+                }
+            }
+        },
+        "ServiceProblemRef": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "Unique identifier of the Problem"
+                },
+                "href": {
+                    "type": "string",
+                    "description": "Reference of the Problem"
+                },
+                "correlationId": {
+                    "type": "string",
+                    "description": "Additional identifier coming from an external system"
+                },
+                "@baseType": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the super-class"
+                },
+                "@schemaLocation": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "A URI to a JSON-Schema file that defines additional attributes and relationships"
+                },
+                "@type": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the sub-class entity name"
+                },
+                "@referredType": {
+                    "type": "string",
+                    "description": "The actual type of the target instance when needed for disambiguation."
+                }
+            },
+            "required": [
+                "id"
+            ]
+        },
+        "ServiceRef": {
+            "type": "object",
+            "description": "Service reference, for when Service is used by other entities",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "Unique identifier of a related entity."
+                },
+                "href": {
+                    "type": "string",
+                    "description": "Reference of the related entity."
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Name of the related entity."
+                },
+                "@baseType": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the super-class"
+                },
+                "@schemaLocation": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "A URI to a JSON-Schema file that defines additional attributes and relationships"
+                },
+                "@type": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the sub-class entity name"
+                },
+                "@referredType": {
+                    "type": "string",
+                    "description": "The actual type of the target instance when needed for disambiguation."
+                }
+            },
+            "required": [
+                "id"
+            ]
+        },
+        "TrackingRecord": {
+            "type": "object",
+            "description": "Tracking records allow the tracking of modifications on the problem. The tracking records should not be embedded in the problem to allow retrieving the problem without the tracking records",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "Identifier of the TrackingRecord"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Describes the action being done, such as: ack, clear"
+                },
+                "systemId": {
+                    "type": "string",
+                    "description": "Describes the system Id from which the action was done"
+                },
+                "time": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Describes the time at which the action was done"
+                },
+                "user": {
+                    "type": "string",
+                    "description": "Describes the user doing the action"
+                },
+                "extensionInfo": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Characteristic"
+                    },
+                    "description": "A generic list of any type of elements. Used for vendor Extensions or loose element encapsulation from other namespaces"
+                },
+                "@baseType": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the super-class"
+                },
+                "@schemaLocation": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "A URI to a JSON-Schema file that defines additional attributes and relationships"
+                },
+                "@type": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the sub-class entity name"
+                }
+            }
+        },
+        "TroubleTicketRef": {
+            "type": "object",
+            "description": "TroubleTicket reference, for when a Trouble Ticket is used by other entities",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "Unique identifier of a related entity."
+                },
+                "href": {
+                    "type": "string",
+                    "description": "Reference of the related entity."
+                },
+                "name": {
+                    "type": "string",
+                    "description": "Name of the related entity."
+                },
+                "@baseType": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the super-class"
+                },
+                "@schemaLocation": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "A URI to a JSON-Schema file that defines additional attributes and relationships"
+                },
+                "@type": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the sub-class entity name"
+                },
+                "@referredType": {
+                    "type": "string",
+                    "description": "The actual type of the target instance when needed for disambiguation."
+                }
+            },
+            "required": [
+                "id"
+            ]
+        },
+        "EventSubscription": {
+            "type": "object",
+            "description": "Sets the communication endpoint address the service instance must use to deliver notification information",
+            "required": [
+                "id",
+                "callback"
+            ],
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "Id of the listener"
+                },
+                "callback": {
+                    "type": "string",
+                    "description": "The callback being registered."
+                },
+                "query": {
+                    "type": "string",
+                    "description": "additional data to be passed"
+                }
+            }
+        },
+        "EventSubscriptionInput": {
+            "type": "object",
+            "description": "Sets the communication endpoint address the service instance must use to deliver notification information",
+            "required": [
+                "callback"
+            ],
+            "properties": {
+                "callback": {
+                    "type": "string",
+                    "description": "The callback being registered."
+                },
+                "query": {
+                    "type": "string",
+                    "description": "additional data to be passed"
+                }
+            }
+        },
+        "ServiceProblemCreateEvent": {
+            "type": "object",
+            "description": "The notification data structure",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "Identifier of the Process flow"
+                },
+                "href": {
+                    "type": "string",
+                    "description": "Reference of the ProcessFlow"
+                },
+                "eventId": {
+                    "type": "string",
+                    "description": "The identifier of the notification."
+                },
+                "eventTime": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Time of the event occurrence."
+                },
+                "eventType": {
+                    "type": "string",
+                    "description": "The type of the notification."
+                },
+                "correlationId": {
+                    "type": "string",
+                    "description": "The correlation id for this event."
+                },
+                "domain": {
+                    "type": "string",
+                    "description": "The domain of the event."
+                },
+                "title": {
+                    "type": "string",
+                    "description": "The title of the event."
+                },
+                "description": {
+                    "type": "string",
+                    "description": "An explnatory of the event."
+                },
+                "priority": {
+                    "type": "string",
+                    "description": "A priority."
+                },
+                "timeOcurred": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "The time the event occured."
+                },
+                "event": {
+                    "description": "The event payload linked to the involved resource object",
+                    "$ref": "#/definitions/ServiceProblemCreateEventPayload"
+                }
+            }
+        },
+        "ServiceProblemCreateEventPayload": {
+            "type": "object",
+            "description": "The event data structure",
+            "properties": {
+                "serviceProblem": {
+                    "description": "The involved resource data for the event",
+                    "$ref": "#/definitions/ServiceProblem"
+                }
+            }
+        },
+        "ServiceProblemStateChangeEvent": {
+            "type": "object",
+            "description": "The notification data structure",
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "description": "Identifier of the Process flow"
+                },
+                "href": {
+                    "type": "string",
+                    "description": "Reference of the ProcessFlow"
+                },
+                "eventId": {
+                    "type": "string",
+                    "description": "The identifier of the notification."
+                },
+                "eventTime": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Time of the event occurrence."
+                },
+                "eventType": {
+                    "type": "string",
+                    "description": "The type of the notification."
+                },
+                "correlationId": {
+                    "type": "string",
+                    "description": "The correlation id for this event."
+                },
+                "domain": {
+                    "type": "string",
+                    "description": "The domain of the event."
+                },
+                "title": {
+                    "type": "string",
+                    "description": "The title of the event."
+                },
+                "description": {
+                    "type": "string",
+                    "description": "An explnatory of the event."
+                },
+                "priority": {
+                    "type": "string",
+                    "description": "A priority."
+                },
+                "timeOcurred": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "The time the event occured."
+                },
+                "event": {
+                    "description": "The event payload linked to the involved resource object",
+                    "$ref": "#/definitions/ServiceProblemStateChangeEventPayload"
+                }
+            }
+        },
+        "ServiceProblemStateChangeEventPayload": {
+            "type": "object",
+            "description": "The event data structure",
+            "properties": {
+                "serviceProblem": {
+                    "description": "The involved resource data for the event",
+                    "$ref": "#/definitions/ServiceProblem"
+                }
+            }
+        },
+        "ServiceProblemAttributeValueChangeEvent": {
+            "type": "object",
+            "description": "The notification data structure",
+            "properties": {
+                "eventId": {
+                    "type": "string",
+                    "description": "The identifier of the notification."
+                },
+                "eventTime": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Time of the event occurrence."
+                },
+                "eventType": {
+                    "type": "string",
+                    "description": "The type of the notification."
+                },
+                "correlationId": {
+                    "type": "string",
+                    "description": "The correlation id for this event."
+                },
+                "domain": {
+                    "type": "string",
+                    "description": "The domain of the event."
+                },
+                "title": {
+                    "type": "string",
+                    "description": "The title of the event."
+                },
+                "description": {
+                    "type": "string",
+                    "description": "An explnatory of the event."
+                },
+                "priority": {
+                    "type": "string",
+                    "description": "A priority."
+                },
+                "timeOcurred": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "The time the event occured."
+                },
+                "fieldPath": {
+                    "type": "string",
+                    "description": "The path identifying the object field concerned by this notification."
+                },
+                "event": {
+                    "description": "The event payload linked to the involved resource object",
+                    "$ref": "#/definitions/ServiceProblemAttributeValueChangeEventPayload"
+                }
+            }
+        },
+        "ServiceProblemAttributeValueChangeEventPayload": {
+            "type": "object",
+            "description": "The event data structure",
+            "properties": {
+                "serviceProblem": {
+                    "description": "The involved resource data for the event",
+                    "$ref": "#/definitions/ServiceProblem"
+                }
+            }
+        },
+        "ServiceProblemInformationRequiredEvent": {
+            "type": "object",
+            "description": "The notification data structure",
+            "properties": {
+                "eventId": {
+                    "type": "string",
+                    "description": "The identifier of the notification."
+                },
+                "eventTime": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Time of the event occurrence."
+                },
+                "eventType": {
+                    "type": "string",
+                    "description": "The type of the notification."
+                },
+                "correlationId": {
+                    "type": "string",
+                    "description": "The correlation id for this event."
+                },
+                "domain": {
+                    "type": "string",
+                    "description": "The domain of the event."
+                },
+                "title": {
+                    "type": "string",
+                    "description": "The title of the event."
+                },
+                "description": {
+                    "type": "string",
+                    "description": "An explnatory of the event."
+                },
+                "priority": {
+                    "type": "string",
+                    "description": "A priority."
+                },
+                "timeOcurred": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "The time the event occured."
+                },
+                "fieldPath": {
+                    "type": "string",
+                    "description": "The path identifying the object field concerned by this notification."
+                },
+                "event": {
+                    "description": "The event payload linked to the involved resource object",
+                    "$ref": "#/definitions/ServiceProblemInformationRequiredEventPayload"
+                }
+            }
+        },
+        "ServiceProblemInformationRequiredEventPayload": {
+            "type": "object",
+            "description": "The event data structure",
+            "properties": {
+                "serviceProblem": {
+                    "description": "The involved resource data for the event",
+                    "$ref": "#/definitions/ServiceProblem"
+                }
+            }
+        },
+        "Error": {
+            "description": "Used when an API throws an Error, typically with a HTTP error response-code (3xx, 4xx, 5xx)",
+            "type": "object",
+            "required": [
+                "code",
+                "reason"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string",
+                    "description": "Application relevant detail, defined in the API or a common list."
+                },
+                "reason": {
+                    "type": "string",
+                    "description": "Explanation of the reason for the error which can be shown to a client user."
+                },
+                "message": {
+                    "type": "string",
+                    "description": "More details and corrective actions related to the error which can be shown to a client user."
+                },
+                "status": {
+                    "type": "string",
+                    "description": "HTTP Error code extension"
+                },
+                "referenceError": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "URI of documentation describing the error."
+                },
+                "@baseType": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the super-class."
+                },
+                "@schemaLocation": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "A URI to a JSON-Schema file that defines additional attributes and relationships"
+                },
+                "@type": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the sub-class entity name."
+                }
+            }
+        }
+    }
+}

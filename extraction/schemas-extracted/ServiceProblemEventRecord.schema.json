@@ -1,0 +1,56 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "ServiceProblemEventRecord.schema.json",
+    "title": "ServiceProblemEventRecord",
+    "definitions": {
+        "ServiceProblemEventRecord": {
+            "type": "object",
+            "description": "A record of an event (related to a service problem) received from another system",
+            "properties": {
+                "@baseType": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the super-class"
+                },
+                "@schemaLocation": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "A URI to a JSON-Schema file that defines additional attributes and relationships"
+                },
+                "@type": {
+                    "type": "string",
+                    "description": "When sub-classing, this defines the sub-class entity name"
+                },
+                "eventTime": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Time at which the event occurred"
+                },
+                "eventType": {
+                    "type": "string",
+                    "description": "Type of the recorded event"
+                },
+                "href": {
+                    "type": "string",
+                    "description": "reference to this resource"
+                },
+                "id": {
+                    "type": "string",
+                    "description": "Identifier of the service problem event record."
+                },
+                "notification": {
+                    "description": "A notification from the possible notifications for Service Problem (such as creation, status change, information required, change)",
+                    "$ref": "Any.schema.json#/definitions/Any"
+                },
+                "recordTime": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Time at which the record was created"
+                },
+                "serviceProblem": {
+                    "description": "The service problem to which this record applies",
+                    "$ref": "ServiceProblemRef.schema.json#/definitions/ServiceProblemRef"
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,273 @@
+@startuml
+hide circle
+hide methods
+hide stereotype
+show <<Enumeration>> stereotype
+skinparam class {
+   BackgroundColor<<Enumeration>> #E6F5F7
+   BackgroundColor<<Ref>> #FFFFE0
+   BackgroundColor<<Pivot>> #FFFFFFF
+   BackgroundColor #FCF2E3
+}
+
+class ServiceProblem <<Pivot>> {
+    id : String
+    href : String
+    affectedNumberOfServices : Integer
+    category : String
+    correlationId : String
+    description : String
+    impactImportanceFactor : String
+    originatingSystem : String
+    priority : Integer
+    problemEscalation : String
+    reason : String
+    resolutionDate : DateTime
+    status : String
+    statusChangeDate : DateTime
+    statusChangeReason : String
+    timeChanged : DateTime
+    timeRaised : DateTime
+    @baseType : String
+    @schemaLocation : Uri
+    @type : String
+}
+
+class Place {
+    id : String
+    href : String
+    name : String
+    role : String
+    @baseType : String
+    @schemaLocation : Uri
+    @type : String
+}
+
+class ResourceRef <<Ref>> {
+    id : String
+    href : String
+    name : String
+    @baseType : String
+    @schemaLocation : Uri
+    @type : String
+    @referredType : String
+}
+
+class ServiceRef <<Ref>> {
+    id : String
+    href : String
+    @baseType : String
+    @schemaLocation : Uri
+    @type : String
+    @referredType : String
+}
+
+class SLAViolationRef <<Ref>> {
+    id : String
+    href : String
+    @baseType : String
+    @schemaLocation : Uri
+    @type : String
+    @referredType : String
+}
+
+class TroubleTicketRef <<Ref>> {
+    id : String
+    href : String
+    correlationId : String
+    status : String
+    @baseType : String
+    @schemaLocation : Uri
+    @type : String
+    @referredType : String
+}
+
+class Note {
+    author : String
+    date : DateTime
+    system : String
+    text : String
+    @baseType : String
+    @schemaLocation : Uri
+    @type : String
+}
+
+class Characteristic {
+    name : String
+    valueType : String
+    value : Any
+    @baseType : String
+    @schemaLocation : Uri
+    @type : String
+}
+
+class RelatedEntityRef <<Ref>> {
+    id : String
+    href : String
+    name : String
+    @baseType : String
+    @schemaLocation : Uri
+    @type : String
+    @referredType : String
+}
+
+class ImpactPattern {
+    description : String
+    @baseType : String
+    @schemaLocation : Uri
+    @type : String
+}
+
+class RelatedParty {
+    id : String
+    href : String
+    name : String
+    role : String
+    @baseType : String
+    @schemaLocation : String
+    @type : String
+    @referredType : String
+}
+
+class ServiceProblemRef <<Ref>> {
+    id : String
+    href : String
+    correlationId : String
+    @baseType : String
+    @schemaLocation : Uri
+    @type : String
+    @referredType : String
+}
+
+class EventRef <<Ref>> {
+    id : String
+    href : String
+    eventTime : DateTime
+    eventType : String
+    @baseType : String
+    @schemaLocation : Uri
+    @type : String
+    @referredType : String
+}
+
+class TrackingRecord {
+    id : String
+    description : String
+    systemId : String
+    time : DateTime
+    user : String
+    @baseType : String
+    @schemaLocation : Uri
+    @type : String
+}
+
+class ResourceAlarmRef <<Ref>> {
+    id : String
+    href : String
+    @baseType : String
+    @schemaLocation : Uri
+    @type : String
+    @referredType : String
+}
+
+class ChangeRequestRef <<Ref>> {
+    id : String
+    href : String
+    @baseType : String
+    @schemaLocation : Uri
+    @type : String
+    @referredType : String
+}
+
+
+'processing edges for ServiceProblem
+Place "0..*" <-left-* ServiceProblem : affectedLocation
+' rule: L01
+ServiceProblem *-right-> "0..*" SLAViolationRef : associatedSLAViolation
+' rule: R03
+ServiceProblem *-->  "0..1" ImpactPattern : impactPatterns
+' rule: General below rule - either none already or unable to place left / right of currently placed
+ServiceProblem *-->  "0..*" Characteristic : extensionInfo
+' rule: General below rule - either none already or unable to place left / right of currently placed
+ServiceProblem *-->  "0..*" TrackingRecord : trackingRecord
+' rule: General below rule - either none already or unable to place left / right of currently placed
+'completed processing of edges for ServiceProblem
+
+'processing edges for Characteristic
+
+'processing edges for ImpactPattern
+'completed processing of edges for ImpactPattern
+
+'processing edges for TrackingRecord
+'completed processing of edges for TrackingRecord
+
+'processing edges for ServiceProblem
+Characteristic "0..*" <-left-* ImpactPattern : extensionInfo
+' rule: placeEdgesBetweenNodesAlreadyPlaced - ImpactPattern < Characteristic
+Characteristic "0..*" <--* TrackingRecord : extensionInfo
+' rule: placeEdgesBetweenNodesAlreadyPlaced - Characteristic < TrackingRecord
+TroubleTicketRef "0..*" <--* ServiceProblem : associatedTroubleTicket
+' rule: General above rule - direction: right
+Note "0..*" <--* ServiceProblem : comment
+' rule: General above rule - direction: right
+EventRef "0..*" <--* ServiceProblem : relatedEvent
+' rule: General above rule - direction: right
+ResourceRef "0..*" <--* ServiceProblem : affectedResource
+ResourceRef "0..*" <--* ServiceProblem : rootCauseResource
+' rule: General above rule - direction: right
+ServiceRef "0..*" <--* ServiceProblem : affectedService
+ServiceRef "0..*" <--* ServiceProblem : rootCauseService
+' rule: General above rule - direction: right
+RelatedEntityRef "0..1" <--* ServiceProblem : firstAlert
+RelatedEntityRef "0..*" <--* ServiceProblem : relatedObject
+' rule: General above rule - direction: right
+ServiceProblem *-->  "0..*" ResourceAlarmRef : underlyingAlarm
+' rule: General below rule - direction to left
+ServiceProblem -[hidden]-> ResourceAlarmRef
+ResourceAlarmRef -right[hidden]- Characteristic
+ServiceProblem *-->  "0..*" ServiceProblemRef : parentProblem
+ServiceProblem *-->  "0..*" ServiceProblemRef : underlyingProblem
+' rule: General below rule - direction to left
+ServiceProblemRef -right[hidden]- ResourceAlarmRef
+ServiceProblem *-->  "0..1" RelatedParty : originatorParty
+ServiceProblem *-->  "0..*" RelatedParty : relatedParty
+ServiceProblem *-->  "0..1" RelatedParty : responsibleParty
+' rule: General below rule - direction to left
+RelatedParty -right[hidden]- ServiceProblemRef
+'completed processing of edges for ServiceProblem
+
+'processing edges for Place
+
+'processing edges for ResourceRef
+
+'processing edges for ServiceRef
+
+'processing edges for SLAViolationRef
+
+'processing edges for TroubleTicketRef
+
+'processing edges for Note
+
+'processing edges for Characteristic
+
+'processing edges for RelatedEntityRef
+
+'processing edges for ImpactPattern
+'completed processing of edges for ImpactPattern
+
+'processing edges for RelatedParty
+
+'processing edges for ServiceProblemRef
+
+'processing edges for EventRef
+
+'processing edges for TrackingRecord
+'completed processing of edges for TrackingRecord
+
+'processing edges for ResourceAlarmRef
+ResourceAlarmRef *-->  "0..1" ChangeRequestRef : changeRequest
+' rule: General below rule - either none already or unable to place left / right of currently placed
+'completed processing of edges for ResourceAlarmRef
+
+'processing edges for ChangeRequestRef
+@enduml

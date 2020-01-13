@@ -1,0 +1,39 @@
+@startuml
+hide circle
+hide methods
+hide stereotype
+show <<Enumeration>> stereotype
+skinparam class {
+   BackgroundColor<<Enumeration>> #E6F5F7
+   BackgroundColor<<Ref>> #FFFFE0
+   BackgroundColor<<Pivot>> #FFFFFFF
+   BackgroundColor #FCF2E3
+}
+
+class ProblemGroup <<Pivot>> {
+    id : String
+    href : String
+    @baseType : String
+    @schemaLocation : Uri
+    @type : String
+}
+
+class ServiceProblemRef <<Ref>> {
+    id : String
+    href : String
+    correlationId : String
+    @baseType : String
+    @schemaLocation : Uri
+    @type : String
+    @referredType : String
+}
+
+
+'processing edges for ProblemGroup
+ProblemGroup *-->  "0..*" ServiceProblemRef : childProblem
+ProblemGroup *-->  "0..1" ServiceProblemRef : parentProblem
+' rule: General below rule - either none already or unable to place left / right of currently placed
+'completed processing of edges for ProblemGroup
+
+'processing edges for ServiceProblemRef
+@enduml

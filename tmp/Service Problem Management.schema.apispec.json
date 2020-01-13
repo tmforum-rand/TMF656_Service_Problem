@@ -1,0 +1,815 @@
+{
+    "name": "Service Problem Management",
+    "id": "serviceProblemManagement",
+    "version": "4.0.0",
+    "hostUrl": "https://serverRoot",
+    "basePath": "/tmf-api/serviceProblemManagement/v4/",
+    "description": "## TMF API Reference: TMF656 - Service Problem Management\n\n### Release : 18.5 - December 2018\n\nService Problem Management API goal is to provide the ability to manage problems in the Service domain. \n\n### Resource \n- serviceProblem\n\n### Operations\nService Problem Management API performs the following operations on the resource :\n- Retrieve an entity or a collection of entities depending on filter criteria\n- Partial update of an entity (including updating rules)\n- Create an entity (including default values and creation rules)\n- Delete an entity (for administration purposes)\n- Manage notification of events",
+    "regularResources": [
+        "serviceProblemEventRecord",
+        "serviceProblem",
+        "problemUnacknowledgement",
+        "problemUngroup",
+        "problemAcknowledgement",
+        "problemGroup"
+    ],
+    "eventResources": [],
+    "usedClassesInRegularApi": [
+        "Any",
+        "ChangeRequestRef",
+        "Characteristic",
+        "EntityRef",
+        "EventRef",
+        "ImpactPattern",
+        "Note",
+        "Place",
+        "ProblemAcknowledgement",
+        "ProblemGroup",
+        "ProblemUnacknowledgement",
+        "ProblemUngroup",
+        "RelatedEntityRef",
+        "RelatedParty",
+        "ResourceAlarmRef",
+        "ResourceRef",
+        "SLAViolationRef",
+        "ServiceProblem",
+        "ServiceProblemEventRecord",
+        "ServiceProblemRef",
+        "ServiceRef",
+        "TrackingRecord",
+        "TroubleTicketRef"
+    ],
+    "usedClassesInEventsApi": [],
+    "resourceClasses": [
+        "ServiceProblemEventRecord",
+        "ServiceProblem",
+        "ProblemUnacknowledgement",
+        "ProblemUngroup",
+        "ProblemAcknowledgement",
+        "ProblemGroup"
+    ],
+    "resources": [
+        {
+            "name": "serviceProblemEventRecord",
+            "class": "ServiceProblemEventRecord",
+            "documentation": "A record of an event (related to a service problem) received from another system",
+            "actions": [
+                "list",
+                "retrieve",
+                "create",
+                "update",
+                "partialupdate",
+                "delete"
+            ],
+            "attributes": [
+                "eventTime",
+                "eventType",
+                "href",
+                "id",
+                "notification",
+                "recordTime",
+                "serviceProblem"
+            ],
+            "attributeDetails": {
+                "eventTime": {
+                    "type": "DateTime",
+                    "multiplicity": "0..1",
+                    "documentation": "Time at which the event occurred"
+                },
+                "eventType": {
+                    "type": "String",
+                    "multiplicity": "0..1",
+                    "documentation": "Type of the recorded event"
+                },
+                "href": {
+                    "type": "String",
+                    "multiplicity": "0..1",
+                    "documentation": "reference to this resource"
+                },
+                "id": {
+                    "type": "String",
+                    "multiplicity": "0..1",
+                    "documentation": "Identifier of the service problem event record."
+                },
+                "notification": {
+                    "type": "Any",
+                    "multiplicity": "0..1",
+                    "documentation": "A notification from the possible notifications for Service Problem (such as creation, status change, information required, change)"
+                },
+                "recordTime": {
+                    "type": "DateTime",
+                    "multiplicity": "0..1",
+                    "documentation": "Time at which the record was created"
+                },
+                "serviceProblem": {
+                    "type": "ServiceProblemRef",
+                    "multiplicity": "0..1",
+                    "documentation": "The service problem to which this record applies"
+                }
+            }
+        },
+        {
+            "name": "serviceProblem",
+            "class": "ServiceProblem",
+            "documentation": "The problem information for Middle B which is abstracted in the service layer from the issued event information by First B",
+            "actions": [
+                "list",
+                "retrieve",
+                "create",
+                "update",
+                "partialupdate",
+                "delete"
+            ],
+            "attributes": [
+                "affectedLocation",
+                "affectedNumberOfServices",
+                "affectedResource",
+                "affectedService",
+                "associatedSLAViolation",
+                "associatedTroubleTicket",
+                "category",
+                "comment",
+                "correlationId",
+                "description",
+                "extensionInfo",
+                "firstAlert",
+                "href",
+                "id",
+                "impactImportanceFactor",
+                "impactPatterns",
+                "originatingSystem",
+                "originatorParty",
+                "parentProblem",
+                "priority",
+                "problemEscalation",
+                "reason",
+                "relatedEvent",
+                "relatedObject",
+                "relatedParty",
+                "resolutionDate",
+                "responsibleParty",
+                "rootCauseResource",
+                "rootCauseService",
+                "status",
+                "statusChangeDate",
+                "statusChangeReason",
+                "timeChanged",
+                "timeRaised",
+                "trackingRecord",
+                "underlyingAlarm",
+                "underlyingProblem"
+            ],
+            "attributeDetails": {
+                "affectedLocation": {
+                    "type": "Place",
+                    "multiplicity": "*",
+                    "documentation": "A list of the locations affected by the problem. At least one of affectedResource, affectedService or affectedLocation should be present."
+                },
+                "affectedNumberOfServices": {
+                    "type": "Integer",
+                    "multiplicity": "0..1",
+                    "documentation": "Number of affected services"
+                },
+                "affectedResource": {
+                    "type": "ResourceRef",
+                    "multiplicity": "*",
+                    "documentation": "A list of the resources affected by the problem. At least one of affectedResource, affectedService or affectedLocation should be present."
+                },
+                "affectedService": {
+                    "type": "ServiceRef",
+                    "multiplicity": "*",
+                    "documentation": "List of affected services. At least one of affectedResource, affectedService or affectedLocation should be present."
+                },
+                "associatedSLAViolation": {
+                    "type": "SLAViolationRef",
+                    "multiplicity": "*",
+                    "documentation": "A List of SLA violations associated with this problem."
+                },
+                "associatedTroubleTicket": {
+                    "type": "TroubleTicketRef",
+                    "multiplicity": "*",
+                    "documentation": "A list of trouble tickets associated with this problem."
+                },
+                "category": {
+                    "type": "String",
+                    "multiplicity": "0..1",
+                    "documentation": "Classifier for the problem. Settable. For example, this is used for distinguish the category of problem originator in [role].[category] format. Example: serviceProvider.declarer, supplier.originated, system.originated"
+                },
+                "comment": {
+                    "type": "Note",
+                    "multiplicity": "*",
+                    "documentation": "A list of comments or notes made on the problem"
+                },
+                "correlationId": {
+                    "type": "String",
+                    "multiplicity": "0..1",
+                    "documentation": "Additional identifier coming from an external system"
+                },
+                "description": {
+                    "type": "String",
+                    "multiplicity": "0..1",
+                    "documentation": "Free form text describing the Service Problem"
+                },
+                "extensionInfo": {
+                    "type": "Characteristic",
+                    "multiplicity": "*",
+                    "documentation": "A generic list of any type of elements. Used for vendor Extensions or loose element encapsulation from other namespaces"
+                },
+                "firstAlert": {
+                    "type": "RelatedEntityRef",
+                    "multiplicity": "0..1",
+                    "documentation": "Indicates what first alerted the system to the problem. It is not the root cause of the Service Problem. Examples: Threshold crossing alert"
+                },
+                "href": {
+                    "type": "String",
+                    "multiplicity": "0..1",
+                    "documentation": "Reference to the Service Problem"
+                },
+                "id": {
+                    "type": "String",
+                    "multiplicity": "0..1",
+                    "documentation": "Identifier of the service problem"
+                },
+                "impactImportanceFactor": {
+                    "type": "String",
+                    "multiplicity": "0..1",
+                    "documentation": "Impact Importance is characterized by an Impact Importance Factor: overall importance of the impact of all the affected services, e.g. 0 (zero impact) to 100 (worst impact). The Impact Importance is a calculated field which is set by the OSS determining the impact."
+                },
+                "impactPatterns": {
+                    "type": "ImpactPattern",
+                    "multiplicity": "0..1",
+                    "documentation": "Define the patterns of impact (optional)- e.g. other service characteristics- Used when defining impact through another pattern than the predefined attributes."
+                },
+                "originatingSystem": {
+                    "type": "String",
+                    "multiplicity": "0..1",
+                    "documentation": "Indicates where the problem was generated"
+                },
+                "originatorParty": {
+                    "type": "RelatedParty",
+                    "multiplicity": "0..1",
+                    "documentation": "Individual or organization that created the problem"
+                },
+                "parentProblem": {
+                    "type": "ServiceProblemRef",
+                    "multiplicity": "*",
+                    "documentation": "The parent problem to which this problem is attached."
+                },
+                "priority": {
+                    "type": "Integer",
+                    "multiplicity": "0..1",
+                    "documentation": "An indication varying from 1 (highest) to 10 (lowest) of how important it is for the service provider to correct the Service Problem."
+                },
+                "problemEscalation": {
+                    "type": "String",
+                    "multiplicity": "0..1",
+                    "documentation": "Indicates if this service problem has been escalated or not. Possible values are 0 to 10. A value of zero means no escalation. The meanings of values 1-10 are to be determined by the user of the interface, but they show increasing levels of escalation."
+                },
+                "reason": {
+                    "type": "String",
+                    "multiplicity": "0..1",
+                    "documentation": "Free text or optionally structured text. It can be Unknown."
+                },
+                "relatedEvent": {
+                    "type": "EventRef",
+                    "multiplicity": "*",
+                    "documentation": "List of events associated to this problem"
+                },
+                "relatedObject": {
+                    "type": "RelatedEntityRef",
+                    "multiplicity": "*",
+                    "documentation": "List of objects associated to this problem"
+                },
+                "relatedParty": {
+                    "type": "RelatedParty",
+                    "multiplicity": "*",
+                    "documentation": "List of parties or party roles playing a role within the service problem"
+                },
+                "resolutionDate": {
+                    "type": "DateTime",
+                    "multiplicity": "0..1",
+                    "documentation": "Time the problem was resolved"
+                },
+                "responsibleParty": {
+                    "type": "RelatedParty",
+                    "multiplicity": "0..1",
+                    "documentation": "Individual or organization responsible for handling this problem"
+                },
+                "rootCauseResource": {
+                    "type": "ResourceRef",
+                    "multiplicity": "*",
+                    "documentation": "Resource(s) that are associated to the underlying service problems that are the Root Cause of this one if any (used only if applicable)."
+                },
+                "rootCauseService": {
+                    "type": "ServiceRef",
+                    "multiplicity": "*",
+                    "documentation": "Service(s) that are associated to the underlying service problems that are the Root Cause of this one if any (used only if applicable)"
+                },
+                "status": {
+                    "type": "String",
+                    "multiplicity": "0..1",
+                    "documentation": "The current status of the service problem. Possible values are Submitted, Rejected, Acknowledged, In Progress [Held, Pending], Resolved, Closed, and Cancelled."
+                },
+                "statusChangeDate": {
+                    "type": "DateTime",
+                    "multiplicity": "0..1",
+                    "documentation": "Time the problem was last status changed"
+                },
+                "statusChangeReason": {
+                    "type": "String",
+                    "multiplicity": "0..1",
+                    "documentation": "The reason of state change"
+                },
+                "timeChanged": {
+                    "type": "DateTime",
+                    "multiplicity": "0..1",
+                    "documentation": "Time the problem was last changed"
+                },
+                "timeRaised": {
+                    "type": "DateTime",
+                    "multiplicity": "0..1",
+                    "documentation": "Time the problem was raised"
+                },
+                "trackingRecord": {
+                    "type": "TrackingRecord",
+                    "multiplicity": "*",
+                    "documentation": "List of tracking records that allow the tracking of modifications on the problem.The tracking records should not be embedded in the problem to allow retrieving the problem without the tracking records"
+                },
+                "underlyingAlarm": {
+                    "type": "ResourceAlarmRef",
+                    "multiplicity": "*",
+                    "documentation": "A list of alarms underlying this problem."
+                },
+                "underlyingProblem": {
+                    "type": "ServiceProblemRef",
+                    "multiplicity": "*",
+                    "documentation": "A list of underlying problems. Relevant only if this problem is derived from other problems."
+                }
+            }
+        },
+        {
+            "name": "problemUnacknowledgement",
+            "class": "ProblemUnacknowledgement",
+            "documentation": "Task resource that requests unacknowledgement of problems, rolling back the status of the problems from Acknowledged to Submitted.",
+            "actions": [
+                "list",
+                "retrieve",
+                "create",
+                "update",
+                "partialupdate",
+                "delete"
+            ],
+            "attributes": [
+                "href",
+                "id",
+                "problem",
+                "trackingRecord",
+                "unackProblem"
+            ],
+            "attributeDetails": {
+                "href": {
+                    "type": "String",
+                    "multiplicity": "0..1",
+                    "documentation": "Reference to this task resource"
+                },
+                "id": {
+                    "type": "String",
+                    "multiplicity": "0..1",
+                    "documentation": "Unique identifier of this task resource"
+                },
+                "problem": {
+                    "type": "ServiceProblemRef",
+                    "multiplicity": "*",
+                    "documentation": "The problems to be unacknowledged, relevant in the input to this task"
+                },
+                "trackingRecord": {
+                    "type": "TrackingRecord",
+                    "multiplicity": "0..1",
+                    "documentation": "A record of the action taken in this acknowledgement"
+                },
+                "unackProblem": {
+                    "type": "ServiceProblemRef",
+                    "multiplicity": "*",
+                    "documentation": "The problems that were unacknowledged, populated in the output to this task"
+                }
+            }
+        },
+        {
+            "name": "problemUngroup",
+            "class": "ProblemUngroup",
+            "documentation": "Task resource that requests Service Problems to be ungrouped from a parent",
+            "actions": [
+                "list",
+                "retrieve",
+                "create",
+                "update",
+                "partialupdate",
+                "delete"
+            ],
+            "attributes": [
+                "childProblem",
+                "href",
+                "id",
+                "parentProblem"
+            ],
+            "attributeDetails": {
+                "childProblem": {
+                    "type": "ServiceProblemRef",
+                    "multiplicity": "*",
+                    "documentation": "List of problems to be ungrouped from a parent problem"
+                },
+                "href": {
+                    "type": "String",
+                    "multiplicity": "0..1",
+                    "documentation": "Reference to this task resource"
+                },
+                "id": {
+                    "type": "String",
+                    "multiplicity": "0..1",
+                    "documentation": "Unique identifier of this task resource"
+                },
+                "parentProblem": {
+                    "type": "ServiceProblemRef",
+                    "multiplicity": "0..1",
+                    "documentation": "The parent problem from which the problems are to be ungrouped"
+                }
+            }
+        },
+        {
+            "name": "problemAcknowledgement",
+            "class": "ProblemAcknowledgement",
+            "documentation": "Task resource that requests acknowledgement of problems by the problem handler.",
+            "actions": [
+                "list",
+                "retrieve",
+                "create",
+                "update",
+                "partialupdate",
+                "delete"
+            ],
+            "attributes": [
+                "ackProblem",
+                "href",
+                "id",
+                "problem",
+                "trackingRecord"
+            ],
+            "attributeDetails": {
+                "ackProblem": {
+                    "type": "ServiceProblemRef",
+                    "multiplicity": "*",
+                    "documentation": "The problems that were acknowledged, populated in the output to this task"
+                },
+                "href": {
+                    "type": "String",
+                    "multiplicity": "0..1",
+                    "documentation": "Reference to this task resource"
+                },
+                "id": {
+                    "type": "String",
+                    "multiplicity": "0..1",
+                    "documentation": "Unique identifier of this task resource"
+                },
+                "problem": {
+                    "type": "ServiceProblemRef",
+                    "multiplicity": "*",
+                    "documentation": "The problems to be acknowledged, relevant in the input to this task"
+                },
+                "trackingRecord": {
+                    "type": "TrackingRecord",
+                    "multiplicity": "0..1",
+                    "documentation": "A record of the action taken in this acknowledgement"
+                }
+            }
+        },
+        {
+            "name": "problemGroup",
+            "class": "ProblemGroup",
+            "documentation": "Task resource that requests Service Problems to be grouped together into a parent and set of children",
+            "actions": [
+                "list",
+                "retrieve",
+                "create",
+                "update",
+                "partialupdate",
+                "delete"
+            ],
+            "attributes": [
+                "childProblem",
+                "href",
+                "id",
+                "parentProblem"
+            ],
+            "attributeDetails": {
+                "childProblem": {
+                    "type": "ServiceProblemRef",
+                    "multiplicity": "*",
+                    "documentation": "List of problems to be grouped under a parent problem"
+                },
+                "href": {
+                    "type": "String",
+                    "multiplicity": "0..1",
+                    "documentation": "Reference to this task resource"
+                },
+                "id": {
+                    "type": "String",
+                    "multiplicity": "0..1",
+                    "documentation": "Unique identifier of this task resource"
+                },
+                "parentProblem": {
+                    "type": "ServiceProblemRef",
+                    "multiplicity": "0..1",
+                    "documentation": "The parent problem to which the problems are to be grouped"
+                }
+            }
+        }
+    ],
+    "flavors": [
+        "regular"
+    ],
+    "resourcesByFlavors": {
+        "regular": {
+            "ServiceProblem": {
+                "actions": [
+                    "list",
+                    "retrieve",
+                    "create",
+                    "partialupdate",
+                    "delete"
+                ],
+                "actionDetails": {
+                    "create": {
+                        "rules": {
+                            "MandatoryAttributes": {
+                                "mandatory": [
+                                    "category",
+                                    "priority",
+                                    "description",
+                                    "reason",
+                                    "originatorParty"
+                                ]
+                            },
+                            "PatchableAttributes": {
+                                "nonpatchable": [
+                                    "correlationId",
+                                    "firstAlert",
+                                    "href",
+                                    "id",
+                                    "originatingSystem",
+                                    "timeRaised",
+                                    "trackingRecord"
+                                ]
+                            }
+                        }
+                    },
+                    "partialupdate": {
+                        "rules": {
+                            "PatchableAttributes": {
+                                "nonpatchable": [
+                                    "correlationId",
+                                    "firstAlert",
+                                    "href",
+                                    "id",
+                                    "originatingSystem",
+                                    "timeRaised",
+                                    "trackingRecord"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "notifications": [
+                    "create",
+                    "stateChange",
+                    "attributeValueChange",
+                    "informationRequired"
+                ]
+            },
+            "ServiceProblemEventRecord": {
+                "actions": [
+                    "list",
+                    "retrieve"
+                ],
+                "actionDetails": {},
+                "notifications": []
+            },
+            "ProblemAcknowledgement": {
+                "actions": [
+                    "create"
+                ],
+                "actionDetails": {
+                    "create": {
+                        "rules": {
+                            "MandatoryAttributes": {
+                                "mandatory": [
+                                    "problem"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "notifications": []
+            },
+            "ProblemUnacknowledgement": {
+                "actions": [
+                    "create"
+                ],
+                "actionDetails": {
+                    "create": {
+                        "rules": {
+                            "MandatoryAttributes": {
+                                "mandatory": [
+                                    "problem"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "notifications": []
+            },
+            "ProblemGroup": {
+                "actions": [
+                    "create"
+                ],
+                "actionDetails": {
+                    "create": {
+                        "rules": {
+                            "MandatoryAttributes": {
+                                "mandatory": [
+                                    "parentProblem",
+                                    "childProblem"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "notifications": []
+            },
+            "ProblemUngroup": {
+                "actions": [
+                    "create"
+                ],
+                "actionDetails": {
+                    "create": {
+                        "rules": {
+                            "MandatoryAttributes": {
+                                "mandatory": [
+                                    "parentProblem",
+                                    "childProblem"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "notifications": []
+            }
+        }
+    },
+    "flavorDefinitions": {
+        "flavorIds": [
+            "regular"
+        ],
+        "byFlavor": {
+            "regular": {
+                "resourceIds": [
+                    "ServiceProblem",
+                    "ServiceProblemEventRecord",
+                    "ProblemAcknowledgement",
+                    "ProblemUnacknowledgement",
+                    "ProblemGroup",
+                    "ProblemUngroup"
+                ]
+            }
+        },
+        "allRegularResources": [
+            "ServiceProblem",
+            "ServiceProblemEventRecord",
+            "ProblemAcknowledgement",
+            "ProblemUnacknowledgement",
+            "ProblemGroup",
+            "ProblemUngroup"
+        ],
+        "allEventResources": [
+            "ServiceProblemCreateEvent",
+            "ServiceProblemStateChangeEvent",
+            "ServiceProblemAttributeValueChangeEvent",
+            "ServiceProblemInformationRequiredEvent"
+        ],
+        "eventNotifications": {
+            "ServiceProblem": [
+                "create",
+                "stateChange",
+                "attributeValueChange",
+                "informationRequired"
+            ]
+        },
+        "eventTargetClasses": {
+            "ServiceProblemCreateEvent": "ServiceProblem",
+            "ServiceProblemStateChangeEvent": "ServiceProblem",
+            "ServiceProblemAttributeValueChangeEvent": "ServiceProblem",
+            "ServiceProblemInformationRequiredEvent": "ServiceProblem"
+        }
+    },
+    "modeledRules": {
+        "doc": "## TMF API Reference: TMF656 - Service Problem Management\n\n### Release : 18.5 - December 2018\n\nService Problem Management API goal is to provide the ability to manage problems in the Service domain. \n\n### Resource \n- serviceProblem\n\n### Operations\nService Problem Management API performs the following operations on the resource :\n- Retrieve an entity or a collection of entities depending on filter criteria\n- Partial update of an entity (including updating rules)\n- Create an entity (including default values and creation rules)\n- Delete an entity (for administration purposes)\n- Manage notification of events",
+        "hostUrl": "https://serverRoot",
+        "basePath": "/tmf-api/serviceProblemManagement/v4/",
+        "version": "4.0.0",
+        "flavors": [
+            "regular"
+        ],
+        "resources": {
+            "regular": [
+                "ServiceProblem",
+                "ServiceProblemEventRecord",
+                "ProblemAcknowledgement",
+                "ProblemUnacknowledgement",
+                "ProblemGroup",
+                "ProblemUngroup"
+            ]
+        },
+        "rules": {
+            "ServiceProblem": {
+                "regular": {
+                    "operations": [
+                        "GET",
+                        "POST",
+                        "PATCH",
+                        "DELETE"
+                    ],
+                    "mandatory in post": [
+                        "category",
+                        "priority",
+                        "description",
+                        "reason",
+                        "originatorParty"
+                    ],
+                    "non patchable": [
+                        "correlationId",
+                        "firstAlert",
+                        "href",
+                        "id",
+                        "originatingSystem",
+                        "timeRaised",
+                        "trackingRecord"
+                    ],
+                    "notifications": [
+                        "create",
+                        "stateChange",
+                        "attributeValueChange",
+                        "informationRequired"
+                    ]
+                }
+            },
+            "ServiceProblemEventRecord": {
+                "regular": {
+                    "operations": [
+                        "GET"
+                    ]
+                }
+            },
+            "ProblemAcknowledgement": {
+                "regular": {
+                    "operations": [
+                        "POST"
+                    ],
+                    "mandatory in post": [
+                        "problem"
+                    ]
+                }
+            },
+            "ProblemUnacknowledgement": {
+                "regular": {
+                    "operations": [
+                        "POST"
+                    ],
+                    "mandatory in post": [
+                        "problem"
+                    ]
+                }
+            },
+            "ProblemGroup": {
+                "regular": {
+                    "operations": [
+                        "POST"
+                    ],
+                    "mandatory in post": [
+                        "parentProblem",
+                        "childProblem"
+                    ]
+                }
+            },
+            "ProblemUngroup": {
+                "regular": {
+                    "operations": [
+                        "POST"
+                    ],
+                    "mandatory in post": [
+                        "parentProblem",
+                        "childProblem"
+                    ]
+                }
+            }
+        }
+    }
+}

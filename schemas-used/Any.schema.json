@@ -1,0 +1,16 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "Any.schema.json",
+    "title": "Any",
+    "definitions": {
+        "Any": {
+            "type": "object",
+            "properties": {},
+            "allOf": [
+                {
+                    "$ref": "Entity.schema.json#/Entity"
+                }
+            ]
+        }
+    }
+}

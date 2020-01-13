@@ -1,0 +1,17 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "ServiceProblemAttributeValueChangeEvent.schema.json",
+    "title": "ServiceProblemAttributeValueChangeEvent",
+    "definitions": {
+        "ServiceProblemAttributeValueChangeEvent": {
+            "type": "object",
+            "description": "The notification data structure",
+            "properties": {
+                "event": {
+                    "description": "The event payload linked to the involved resource object",
+                    "$ref": "ServiceProblemAttributeValueChangeEventPayload.schema.json#ServiceProblemAttributeValueChangeEventPayload"
+                }
+            }
+        }
+    }
+}

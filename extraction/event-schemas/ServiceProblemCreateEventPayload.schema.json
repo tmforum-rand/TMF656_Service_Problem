@@ -1,0 +1,17 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "ServiceProblemCreateEventPayload.schema.json",
+    "title": "ServiceProblemCreateEventPayload",
+    "definitions": {
+        "ServiceProblemCreateEventPayload": {
+            "type": "object",
+            "description": "The event data structure",
+            "properties": {
+                "serviceProblem": {
+                    "description": "The involved resource data for the event",
+                    "$ref": "ServiceProblem.schema.json#ServiceProblem"
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,26 @@
+warning: Duplicate: Schema 'ProductOfferingQualificationItemRef' in central repository being ignored
+info: 1: top classifiers (in file):[]
+info: 1: *** All classes ***
+info: 1: class ServiceProblemEventRecord kind: Class where: central
+info: 1: class Any kind: Class where: central
+info: 1: class ServiceProblemRef kind: Class where: central
+info: 1: class ServiceProblem kind: Class where: central
+info: 1: class Place kind: Class where: central
+info: 1: class ResourceRef kind: Class where: central
+info: 1: class EntityRef kind: Class where: central
+info: 1: class ServiceRef kind: Class where: central
+info: 1: class SLAViolationRef kind: Class where: central
+info: 1: class TroubleTicketRef kind: Class where: central
+info: 1: class Note kind: Class where: central
+info: 1: class Characteristic kind: Class where: central
+info: 1: class RelatedEntityRef kind: Class where: central
+info: 1: class ImpactPattern kind: Class where: central
+info: 1: class RelatedParty kind: Class where: central
+info: 1: class EventRef kind: Class where: central
+info: 1: class TrackingRecord kind: Class where: central
+info: 1: class ResourceAlarmRef kind: Class where: central
+info: 1: class ChangeRequestRef kind: Class where: central
+info: 1: class ProblemUnacknowledgement kind: Class where: central
+info: 1: class ProblemUngroup kind: Class where: central
+info: 1: class ProblemAcknowledgement kind: Class where: central
+info: 1: class ProblemGroup kind: Class where: central

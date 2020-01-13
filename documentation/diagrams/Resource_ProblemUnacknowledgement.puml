@@ -1,0 +1,68 @@
+@startuml
+hide circle
+hide methods
+hide stereotype
+show <<Enumeration>> stereotype
+skinparam class {
+   BackgroundColor<<Enumeration>> #E6F5F7
+   BackgroundColor<<Ref>> #FFFFE0
+   BackgroundColor<<Pivot>> #FFFFFFF
+   BackgroundColor #FCF2E3
+}
+
+class ProblemUnacknowledgement <<Pivot>> {
+    id : String
+    href : String
+    @baseType : String
+    @schemaLocation : Uri
+    @type : String
+}
+
+class ServiceProblemRef <<Ref>> {
+    id : String
+    href : String
+    correlationId : String
+    @baseType : String
+    @schemaLocation : Uri
+    @type : String
+    @referredType : String
+}
+
+class TrackingRecord {
+    id : String
+    description : String
+    systemId : String
+    time : DateTime
+    user : String
+    @baseType : String
+    @schemaLocation : Uri
+    @type : String
+}
+
+class Characteristic {
+    name : String
+    valueType : String
+    value : Any
+    @baseType : String
+    @schemaLocation : Uri
+    @type : String
+}
+
+
+'processing edges for ProblemUnacknowledgement
+ProblemUnacknowledgement *-->  "0..1" TrackingRecord : trackingRecord
+' rule: General below rule - either none already or unable to place left / right of currently placed
+ProblemUnacknowledgement *-->  "0..*" ServiceProblemRef : problem
+ProblemUnacknowledgement *-->  "0..*" ServiceProblemRef : unackProblem
+' rule: General below rule - either none already or unable to place left / right of currently placed
+'completed processing of edges for ProblemUnacknowledgement
+
+'processing edges for ServiceProblemRef
+
+'processing edges for TrackingRecord
+TrackingRecord *-->  "0..*" Characteristic : extensionInfo
+' rule: General below rule - either none already or unable to place left / right of currently placed
+'completed processing of edges for TrackingRecord
+
+'processing edges for Characteristic
+@enduml
